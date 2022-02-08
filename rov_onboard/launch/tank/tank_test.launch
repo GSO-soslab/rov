@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<launch>
+<!-- utilities -->
+    <!-- LED, Servo, synchronizer -->
+    <include file="$(find rov)/launch/alaska/synchronizer.launch"/> 
+
+<!-- sensors -->
+    <!-- Stereo-camera -->
+    <include file="$(find rov)/launch/alaska/flir_stereo_exteTrig.launch"/> 
+
+    <!-- DVL Ethernet -->
+    <!-- <include file="$(find rov)/launch/sensors/nortek_dvl_ethernet.launch"/> -->
+    <!-- DVL Serial -->
+    <!-- <include file="$(find rov)/launch/sensors/nortek_dvl_serial.launch"/>  -->
+    
+    <!-- Sonar -->
+    <!-- <include file="$(find rov)/launch/sensors/oculus_sonar.launch"/>  -->
+
+    <!-- AHRS -->
+    <!-- <include file="$(find rov)/launch/tank/microstrain_ahrs.launch"/> -->
+
+<!-- processing -->
+    <!-- tf -->
+    <!-- <include file="$(find rov)/launch/processing/urdf.launch"/> -->
+
+    <!-- EKF odometry fuse IMU fitered  and DVL 3-axis velocty -->
+    <!-- <include file="$(find rov)/launch/processing/ekf_odometry.launch"/> -->
+
+
+</launch>

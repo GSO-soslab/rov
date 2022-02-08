@@ -1,0 +1,21 @@
+<package>
+  <name>rov</name>
+  <version>0.0.1</version>
+  <description>Packages for manage rov.</description>
+  <author>Lin Zhao</author>
+  <maintainer email="linzhao@uri.edu">Lin Zhao</maintainer>
+  <license>TODO</license>
+
+  <url type="website">https://github.com/GSO-soslab/rov</url>
+
+
+  <buildtool_depend>catkin</buildtool_depend>
+  
+  <run_depend>rov_onboard</run_depend>
+  <run_depend>rov_remote</run_depend>
+  
+  <export>
+    <metapackage/>
+  </export>
+
+</package>
