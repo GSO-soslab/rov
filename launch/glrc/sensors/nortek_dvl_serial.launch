@@ -1,0 +1,16 @@
+<?xml version="1.1"?>
+<launch>
+    <arg name="frame_id" default="dvl" />
+    <arg name="port_name" default="/dev/ttyTHS0" />
+    <arg name="debug" default="false" />
+
+    <node name="dvl_node" pkg="nortek_dvl" type="driver_node" output="screen" >
+      <param name="frame_id" value="$(arg frame_id)" />
+      <param name="port_name" value="$(arg port_name)" />
+      <param name="debug" value="$(arg debug)" />
+    </node>
+
+</launch> 
+
+
+

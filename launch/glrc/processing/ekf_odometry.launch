@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<launch>
+
+    <node pkg="robot_localization" type="ekf_localization_node" name="ekf_odometry_node" clear_params="true" output="screen">
+        <rosparam command="load" file="$(find rov)/config/ekf_odometry.yaml" />
+        <remap from="odometry/filtered" to="/rov/processed/ekf_odometry"/>
+    </node>
+
+</launch>
