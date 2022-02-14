@@ -13,6 +13,7 @@
   
   <run_depend>rov_onboard</run_depend>
   <run_depend>rov_remote</run_depend>
+  <run_depend>rov_processing</run_depend>
   
   <export>
     <metapackage/>
