@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": "../../ros/soslab_ws/src"
+		},
+		{
+			"path": "../../dev/arduino/synchronizer_arduino"
+		}
+	],
+	"settings": {}
+}

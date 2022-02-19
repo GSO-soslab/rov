@@ -40,12 +40,19 @@
 
 ### LED 
 - flash with camera 
+    - flash seems working, but camera is whole black
+        - close the light, use pwm control the brightness from 1100~1900
+    - flash 20hz is like always light
+        - simluate the led only 
 
 ### GPS time
 - grab gps time message 
 
 ### Cameras:
 - change Jetson system time clock will lead to : `Time candidates buffer overflow`
+- secondary camera still have exposure time(5000) in the setting
+- secondary camera the exposure signal still has 30000, which is the primary setted exposure time
+- try [this camera driver](https://github.com/neufieldrobotics/spinnaker_sdk_camera_driver)
 
 ### DVL NTP
 - setup NTP server as Jetson 

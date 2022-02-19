@@ -6,9 +6,13 @@
 #include <nortek_dvl/CellMeasure.h>
 #include <geometry_msgs/PoseWithCovarianceStamped.h>
 #include <geometry_msgs/TwistWithCovarianceStamped.h>
+#include <sensor_msgs/PointCloud2.h>
+#include <sensor_msgs/point_cloud2_iterator.h>
+#include <tf/transform_broadcaster.h>
+#include <tf/transform_listener.h>
 // filter
 #include <Eigen/Dense>
-#include "kalman.hpp"
+#include "kalman-cpp/kalman.hpp"
 
 #include <mutex>
 #include <queue>
@@ -21,6 +25,8 @@ class ProcessDvl
 public:
   ProcessDvl()
   {
+    cloud_pub = nh.advertise<sensor_msgs::PointCloud2>("/rov/sensors/dvl/pointcloud", 5);
+
     depth_pub = nh.advertise<geometry_msgs::PoseWithCovarianceStamped>("/rov/processed/dvl/depth_filtered", 5);
     twist_pub = nh.advertise<geometry_msgs::TwistWithCovarianceStamped>("/rov/processed/dvl/twist_filtered", 5);
 
@@ -32,6 +38,7 @@ public:
     // load params
     nh.param<double>("air_pressure", air_pressure, 0.0);
     nh.param<double>("standard_soundSpeed", standard_soundSpeed, 1500);
+    nh.param<double>("z_B_D", z_B_D, 1.0);
     nh.param<bool>("print_depth", print_depth, false);
 
     // init 
@@ -49,6 +56,7 @@ private:
   ros::NodeHandle nh;
   ros::Publisher depth_pub;
   ros::Publisher twist_pub;
+  ros::Publisher cloud_pub;
 
   // ros::Subscriber odom_sub;
   ros::Subscriber buttom_track_sub;
@@ -63,7 +71,7 @@ private:
   KalmanFilter depth_kf_;
   Eigen::VectorXd y_depth;
 
-  bool is_depth_first = true;
+  bool depth_initialized = false;
   double init_depth;
 
   // buttom track related
@@ -71,8 +79,10 @@ private:
   double standard_soundSpeed;
   double original_soundSpeed;
   double correct_ratio;
+  double z_B_D;
 
-  double x_factor, y_factor, z_factor;
+  double beam_angle;
+
 
   KalmanFilter twist_kf_;
   Eigen::VectorXd y_twist;
@@ -110,9 +120,8 @@ void ProcessDvl::init()
   temp = 0.0;
   correct_ratio = 1.0;
   // range measurement in DVL frame
-  x_factor = sin(25*PI/180) * cos(45*PI/180);
-  y_factor = sin(25*PI/180) * sin(45*PI/180);
-  z_factor = cos(25*PI/180);
+
+  beam_angle = 25*PI/180;
 
   // filter
   int n2 = 3; // Number of states
@@ -172,11 +181,12 @@ void ProcessDvl::process()
 
     /** Kalman filter to depth noise **/
       // get init position
-      if(is_depth_first){ 
-        is_depth_first = false;
+      if(!depth_initialized){ 
+        depth_initialized = true;
         init_depth = pressure - air_pressure;
       }
-      // update filter
+
+      // update filter, use relative pressure sensor measurement
       y_depth << init_depth - (pressure - air_pressure);
       depth_kf_.update(y_depth);
 
@@ -240,6 +250,69 @@ void ProcessDvl::process()
       twist_msg.twist.covariance[7] = twist_kf_.covariance()(1,1);
       twist_msg.twist.covariance[14] = twist_kf_.covariance()(2,2);
       twist_pub.publish(twist_msg);
+
+
+    /***** pointcloud from 4 DVL beams *****/
+
+      // setup the pointcloud for 4 points with only XYZ property
+      sensor_msgs::PointCloud2 cloud_msg;
+      sensor_msgs::PointCloud2Modifier modifier(cloud_msg);
+      modifier.setPointCloud2FieldsByString(1, "xyz");    
+      modifier.resize(4); 
+
+      // re-generate 3D location of target point
+      std::vector<Eigen::Vector3d> points;
+
+      double beam_azimuth[] = {PI/4.0, -PI/4.0, -3.0*PI/4.0, 3.0*PI/4.0};
+      for (int i = 0; i < 4; i++) {
+          Eigen::Vector3d pt;
+          pt(0) = range[i] * correct_ratio * tan(beam_angle) * cos(beam_azimuth[i]);
+          pt(1) = range[i] * correct_ratio * tan(beam_angle) * sin(beam_azimuth[i]);
+          pt(2) = range[i] * correct_ratio;
+          points.push_back(pt);
+      }
+
+      // setup the points XYZ
+      sensor_msgs::PointCloud2Iterator<float> ros_pc2_x(cloud_msg, "x");
+      sensor_msgs::PointCloud2Iterator<float> ros_pc2_y(cloud_msg, "y");
+      sensor_msgs::PointCloud2Iterator<float> ros_pc2_z(cloud_msg, "z");
+
+      for (size_t i = 0; i < 4; i++, ++ros_pc2_x, ++ros_pc2_y, ++ros_pc2_z) {
+          const Eigen::Vector3d& point = points.at(i);
+          *ros_pc2_x = point(0);
+          *ros_pc2_y = point(1);
+          *ros_pc2_z = point(2);
+      }
+
+      // setup header
+      cloud_msg.header = bt_header;
+
+      cloud_pub.publish(cloud_msg);
+    }
+
+
+    if(depth_initialized) {
+
+      //// publish global and odom frame tf: init_depth + distance between base and dvl
+
+      // get diatnce between base and dvl
+      // tf::TransformListener listener;
+      // tf::StampedTransform trans_B_D;
+      // listener.waitForTransform("base_link", "dvl", ros::Time(0), ros::Duration(1.0));
+      // listener.lookupTransform("base_link", "dvl", ros::Time(0), trans_B_D);
+      // double z_B_D= abs(trans_B_D.getOrigin().z()); 
+
+      double distance = (init_depth + z_B_D) * -1;
+
+      static tf::TransformBroadcaster br;
+      tf::Transform transform;
+      transform.setOrigin( tf::Vector3(0.0, 0.0, distance) );
+      tf::Quaternion q;
+      q.setRPY(0, 0, 0);
+      transform.setRotation(q);
+      br.sendTransform(tf::StampedTransform(transform, ros::Time(0), "/world", "/odom"));
+
+
     }
 
     std::chrono::milliseconds dura(5);

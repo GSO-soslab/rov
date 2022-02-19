@@ -48,7 +48,6 @@ catkin_package(
 ## Specify additional locations of header files
 include_directories(
   include
-  /home/soslab/Develop/3rdparty/kalman-cpp
   ${catkin_INCLUDE_DIRS}
   ${Boost_INCLUDE_DIR}
   ${EIGEN3_INCLUDE_DIR}
@@ -56,7 +55,7 @@ include_directories(
 
 link_directories(${Boost_LIBRARY_DIR})
 
-set(Kalman_LIBS /home/soslab/Develop/3rdparty/kalman-cpp/kalman.cpp )
+set(Kalman_LIBS include/kalman-cpp/kalman.cpp )
 
 ##########################################
 ############### build lib ###############

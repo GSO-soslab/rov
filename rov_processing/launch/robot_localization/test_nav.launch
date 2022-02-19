@@ -9,10 +9,10 @@
     <node pkg="rosbag" type="play" name="rosbag" args="-1-clock -1-pause -d 1 -s $(arg bag_start) $(arg bag)" required="true"/> -->
 
     <!-- TF -->
-    <include file="$(find rov_onboard)/launch/sensors/urdf/urdf_beachPond.launch" />
+    <include file="$(find rov_onboard)/launch/sensors/urdf/urdf_test.launch" />
 
     <!-- Odometry -->
-    <include file="$(find rov_processing)/launch/robot_localization/beachPond_odom.launch" />
+    <include file="$(find rov_processing)/launch/robot_localization/test_odom.launch" />
 
     <!-- Visualization -->
     <node name="path_node" pkg="rov_processing" type="pub_path" output="screen" >

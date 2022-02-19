@@ -36,7 +36,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 
 
   <node pkg="nodelet" type="nodelet" name="$(arg camera_manager)"
-        args="manager" required="true" >
+        args="manager" required="true" output="screen" >
         <param name="num_worker_threads" value="4" />
   </node>
 
@@ -44,7 +44,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
   <group ns="$(arg camera_name)" >
     <group ns="right" >
 
-      <node pkg="nodelet" type="nodelet" name="camera_nodelet"
+      <node pkg="nodelet" type="nodelet" name="camera_nodelet"  
             args="load spinnaker_camera_driver/SpinnakerCameraNodelet /$(arg camera_manager)" 
             launch-prefix="bash -c 'sleep $(arg start_delay_right); $0 $@'" >
             
@@ -63,7 +63,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
         <!-- +++++++++++ Exposure +++++++++++ -->
         <param name="exposure_mode" value="Timed" />         <!-- Timed: exposure time in a specified value -->
         <param name="exposure_auto" value="Continuous" />           <!-- Off: given fixed exposure time; Continuous: auto exposure time -->
-        <param name="auto_exposure_time_upper_limit" value="5500" /> 
+        <param name="auto_exposure_time_upper_limit" value="5000" /> 
         <param name="auto_exposure_time_lower_limit" value="1000" />
         <!-- <param name="exposure_time" value="3000" />         10000: exposure time in microseconds -->
         <param name="line_selector" value="Line2" />         <!--Line2: Red color and Pin 3-->

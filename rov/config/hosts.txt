@@ -1,0 +1,27 @@
+##### From /etc/hosts #####
+
+127.0.0.1	localhost
+127.0.1.1	soslab-NavierNXKit
+
+###############################
+## Underice Navigation Setup ## 
+###############################
+
+## Topside ##
+#192.168.2.1 soslab-field-FZ55 
+192.168.2.1 soslab-lin-p52s
+
+192.168.2.2 raspberrypi
+192.168.2.3 soslab-NavierNXKit
+#192.168.2.4 soslab-lin-p52s
+192.168.2.5 nortek-dvl
+192.168.2.6 oculus-sonar
+
+
+# The following lines are desirable for IPv6 capable hosts
+::1     ip6-localhost ip6-loopback
+fe00::0 ip6-localnet
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+

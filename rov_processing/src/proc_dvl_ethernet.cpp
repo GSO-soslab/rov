@@ -6,9 +6,11 @@
 #include "ds_sensor_msgs/NortekDF21.h"
 #include <geometry_msgs/PoseWithCovarianceStamped.h>
 #include <geometry_msgs/TwistWithCovarianceStamped.h>
+#include <tf/transform_broadcaster.h>
+#include <tf/transform_listener.h>
 // filter
 #include <Eigen/Dense>
-#include "kalman.hpp"
+#include "kalman-cpp/kalman.hpp"
 
 #include <mutex>
 #include <queue>
@@ -30,6 +32,7 @@ public:
     nh.param<double>("air_pressure", air_pressure, 0.0);
     nh.param<double>("standard_soundSpeed", standard_soundSpeed, 1500);
     nh.param<double>("estimated_soundSpeed", estimated_soundSpeed, 1480);
+    nh.param<double>("z_B_D", z_B_D, 1.0);
 
     // init 
     init();
@@ -57,7 +60,7 @@ private:
   KalmanFilter depth_kf_;
   Eigen::VectorXd y_depth;
 
-  bool is_depth_first = true;
+  bool depth_initialized = false;
   double init_depth;
 
   // buttom track related
@@ -72,7 +75,7 @@ private:
   double air_pressure;
   double estimated_soundSpeed;
   double standard_soundSpeed;
-
+  double z_B_D;
 };
 
 void ProcessDvl::init()
@@ -171,8 +174,8 @@ void ProcessDvl::process()
     /****************************** Handle depth ******************************/
 
       //// depth initialization
-      if(is_depth_first){ 
-        is_depth_first = false;
+      if(!depth_initialized){ 
+        depth_initialized = true;
         init_depth = pressure - air_pressure;
       }
 
@@ -223,6 +226,31 @@ void ProcessDvl::process()
       twist_msg.twist.covariance[14] = twist_kf_.covariance()(2,2);
       twist_pub.publish(twist_msg);
     }
+
+    if(depth_initialized) {
+
+      //// publish global and odom frame tf: init_depth + distance between base and dvl
+
+      // get diatnce between base and dvl
+      // tf::TransformListener listener;
+      // tf::StampedTransform trans_B_D;
+      // listener.waitForTransform("base_link", "dvl", ros::Time(0), ros::Duration(1.0));
+      // listener.lookupTransform("base_link", "dvl", ros::Time(0), trans_B_D);
+      // double z_B_D= abs(trans_B_D.getOrigin().z()); 
+
+      double distance = (init_depth + z_B_D) * -1;
+
+      static tf::TransformBroadcaster br;
+      tf::Transform transform;
+      transform.setOrigin( tf::Vector3(0.0, 0.0, distance) );
+      tf::Quaternion q;
+      q.setRPY(0, 0, 0);
+      transform.setRotation(q);
+      br.sendTransform(tf::StampedTransform(transform, ros::Time(0), "/world", "/odom"));
+
+
+    }
+
 
     std::chrono::milliseconds dura(5);
     std::this_thread::sleep_for(dura);

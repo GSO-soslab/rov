@@ -1,0 +1,52 @@
+###### Start chronyd and gpsd for time sync #######
+sudo killall -9 gpsd chronyd
+sudo chronyd -f /etc/chrony/chrony.conf
+sudo sleep 2
+sudo chmod 666 /dev/ttyTHS0
+sudo stty -F /dev/ttyTHS0 speed 9600
+sudo gpsd -n /dev/ttyTHS0 -F /var/run/gpsd.sock /dev/pps1
+cgps -s
+sudo ntpshmmon
+chronyc sources -v
+
+### gpsd ####
+
+## permission
+sudo chmod 666 /dev/ttyTHS0	
+## set baud rate
+stty -F /dev/ttyTHS0 9600
+stty -F /dev/ttyTHS0 speed 9600
+## start gpsd
+sudo gpsd /dev/ttyTHS0 -F /var/run/gpsd.sock
+## check time
+cgps -s
+
+## QUESTIONS ?
+1) which is good for set baud rate ?
+2) how about this : 
+	$ sudo gpsd -N -D3 -F /var/run/gpsd.sock /dev/ttyTHS0 /dev/pps1  
+
+#########################################
+
+### disable chrony ###
+sudo systemctl stop chronyd
+sudo systemctl disable chronyd
+### enable chrony ###
+sudo systemctl daemon-reload
+sudo systemctl enable chrony
+sudo systemctl start chrony
+
+##############################
+####     shell          ######
+##############################
+sudo systemctl stop chronyd
+sudo systemctl stop gpsd
+sudo chmod 666 /dev/ttyTHS0
+stty -F /dev/ttyTHS0 9600
+sudo systemctl start chronyd
+sudo systemctl stop gpsd
+print 'Done ! check with 'chronyc source' '
+
+
+stty -F /dev/ttyTHS0 115200
+stty -F /dev/ttyTHS0 9600

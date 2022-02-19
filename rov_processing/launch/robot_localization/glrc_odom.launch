@@ -15,6 +15,7 @@
     <!-- Pre-processing DVL: correct sound speed, filter noise, depth measurement, depth initialization? -->
     <param name="air_pressure" value="0.377999"/>
     <param name="standard_soundSpeed" value="1480"/>
+    <param name="z_B_D" value="0.391"/>
     <node name="proc_dvl_node" pkg="rov_processing" type="proc_dvl_serial"  output="screen"/>
 
 

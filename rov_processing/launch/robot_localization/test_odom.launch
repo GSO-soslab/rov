@@ -1,21 +1,14 @@
 <?xml version="1.0" ?>
 <launch>
-
-
-
-    <!-- TODO: compensate z-position between base and dvl -->
-    <!-- day_10 test_2: init rov_depth 1.7 + 0.391 -->
-    <!-- day_11 test_2: init rov_depth 2.3 + 0.391 -->
-    <!-- <arg name="rov_depth" default="4.471" /> -->
-
     <!-- Convert into global frame -->
+    <!-- <arg name="rov_depth" default="4.471" /> -->
     <!-- <node pkg="tf" type="static_transform_publisher" name="tf_earth" 
           args="0 0 -$(arg rov_depth) 0 0 0 1 odom_earth odom 100" /> -->
 
     <!-- Pre-processing DVL: correct sound speed, filter noise, depth measurement, depth initialization? -->
     <param name="air_pressure" value="0.377999"/>
     <param name="estimated_soundSpeed" value="1417"/>
-    
+    <param name="z_B_D" value="0.019"/>
     <node name="proc_dvl_node" pkg="rov_processing" type="proc_dvl_serial"  output="screen"/>
 
 
