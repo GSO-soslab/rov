@@ -15,6 +15,7 @@
     <!-- backup commands: -->
         <!-- reset arduino clock: rostopic pub /rov/synchronizer/reset_clock std_msgs/UInt32 -1 1642613314 -->
         <!-- set stereo-cam init good: rostopic pub /rov/synchronizer/cam/init std_msgs/Bool -1 true  -->
+        <!-- set dvl init good: rostopic pub /rov/synchronizer/dvl/init std_msgs/Bool -1 true  -->
         <!-- reset arduino system: rostopic pub /rov/synchronizer/reset_system std_msgs/Bool -1 true -->
         <!-- enable LED flash as cameras: rostopic pub /rov/synchronizer/led/mode std_msgs/Bool -1 true -->
         <!-- change LED flash brightness: rostopic pub /rov/synchronizer/led/cmd std_msgs/UInt16 -1 80 -->
@@ -25,3 +26,5 @@
 
 
 </launch>
+
+

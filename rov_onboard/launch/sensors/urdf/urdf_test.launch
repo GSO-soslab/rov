@@ -3,7 +3,7 @@
   <arg name="model" />
   <arg name="gui" default="False" />
 
-  <param name="robot_description" textfile="$(find rov_onboard)/urdf/beach_pond.urdf" />
+  <param name="robot_description" textfile="$(find rov_onboard)/urdf/test.urdf" />
 
   <param name="use_gui" value="$(arg gui)" />
 

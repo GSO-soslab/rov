@@ -25,7 +25,7 @@ class ProcessDvl
 public:
   ProcessDvl()
   {
-    cloud_pub = nh.advertise<sensor_msgs::PointCloud2>("/rov/sensors/dvl/pointcloud", 5);
+    cloud_pub = nh.advertise<sensor_msgs::PointCloud2>("/rov/processed/dvl/pointcloud", 5);
 
     depth_pub = nh.advertise<geometry_msgs::PoseWithCovarianceStamped>("/rov/processed/dvl/depth_filtered", 5);
     twist_pub = nh.advertise<geometry_msgs::TwistWithCovarianceStamped>("/rov/processed/dvl/twist_filtered", 5);

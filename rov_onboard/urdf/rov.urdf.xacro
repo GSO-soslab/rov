@@ -6,7 +6,7 @@
   <!-- Left-Bottom of 8020 bar on the ground -->
   <link name="base_link"/>
 
-    <link name="ahrs"/>
+    <link name="microstrain_ahrs"/>
 
     <link name="left_camera"/>
 
@@ -19,7 +19,7 @@
   <!-- ahrs -->
   <joint name="base_to_ahrs" type="fixed">
     <parent link="base_link"/>
-    <child link="ahrs"/>
+    <child link="microstrain_ahrs"/>
     <origin xyz="0.406 -0.262 0.089" rpy="0 -${PI} 0"/>
   </joint>
   

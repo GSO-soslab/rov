@@ -6,15 +6,15 @@
 <robot name="rov">
   <!-- Left-Bottom of 8020 bar on the ground -->
   <link name="base_link"/>
-  <link name="ahrs"/>
+  <link name="microstrain_ahrs"/>
   <link name="left_camera"/>
   <link name="right_camera"/>
-  <link name="dvl"/>
+  <link name="nortek_dvl"/>
   <link name="sonar"/>
   <!-- ahrs -->
   <joint name="base_to_ahrs" type="fixed">
     <parent link="base_link"/>
-    <child link="ahrs"/>
+    <child link="microstrain_ahrs"/>
     <origin rpy="0 -3.1415926 0" xyz="0.406 -0.262 0.089"/>
   </joint>
   <!-- left cam -->
@@ -32,7 +32,7 @@
   <!-- dvl -->
   <joint name="base_to_dvl" type="fixed">
     <parent link="base_link"/>
-    <child link="dvl"/>
+    <child link="nortek_dvl"/>
     <origin rpy="-3.1415926 0 0" xyz="-0.038 -0.159 0.019"/>
   </joint>
   <!-- sonar -->

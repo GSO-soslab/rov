@@ -6,6 +6,8 @@
 #include "ds_sensor_msgs/NortekDF21.h"
 #include <geometry_msgs/PoseWithCovarianceStamped.h>
 #include <geometry_msgs/TwistWithCovarianceStamped.h>
+#include <sensor_msgs/point_cloud2_iterator.h>
+#include <sensor_msgs/PointCloud2.h>
 #include <tf/transform_broadcaster.h>
 #include <tf/transform_listener.h>
 // filter
@@ -23,6 +25,7 @@ class ProcessDvl
 public:
   ProcessDvl()
   {
+    cloud_pub = nh.advertise<sensor_msgs::PointCloud2>("/rov/processed/dvl/pointcloud", 5);
     depth_pub = nh.advertise<geometry_msgs::PoseWithCovarianceStamped>("/rov/processed/dvl/depth_filtered", 5);
     twist_pub = nh.advertise<geometry_msgs::TwistWithCovarianceStamped>("/rov/processed/dvl/twist_filtered", 5);
 
@@ -33,6 +36,7 @@ public:
     nh.param<double>("standard_soundSpeed", standard_soundSpeed, 1500);
     nh.param<double>("estimated_soundSpeed", estimated_soundSpeed, 1480);
     nh.param<double>("z_B_D", z_B_D, 1.0);
+    nh.param<bool>("pub_pointcloud", pub_pointcloud, false);
 
     // init 
     init();
@@ -48,6 +52,7 @@ private:
   ros::NodeHandle nh;
   ros::Publisher depth_pub;
   ros::Publisher twist_pub;
+  ros::Publisher cloud_pub;
 
   // ros::Subscriber odom_sub;
   ros::Subscriber sub_dvl;
@@ -67,6 +72,7 @@ private:
   double temp;
   double original_soundSpeed;
   double correct_ratio;
+  double beam_angle;
 
   KalmanFilter twist_kf_;
   Eigen::VectorXd y_twist;
@@ -76,6 +82,7 @@ private:
   double estimated_soundSpeed;
   double standard_soundSpeed;
   double z_B_D;
+  bool pub_pointcloud;
 };
 
 void ProcessDvl::init()
@@ -105,6 +112,8 @@ void ProcessDvl::init()
 /** velocity related **/
   temp = 0.0;
   correct_ratio = 1.0;
+
+  beam_angle = 25*PI/180;
 
   // filter
   int n2 = 3; // Number of states
@@ -164,9 +173,15 @@ void ProcessDvl::process()
 
       //// pressure
       double pressure = msg_Buf_.front()->pressure;
-
       //// original sound speed
       original_soundSpeed = msg_Buf_.front()->speed_sound;
+
+      //// veritcal distance
+      double distance[4]; 
+      distance[0] = msg_Buf_.front()->distBeam[0];
+      distance[1] = msg_Buf_.front()->distBeam[1];
+      distance[2] = msg_Buf_.front()->distBeam[2];
+      distance[3] = msg_Buf_.front()->distBeam[3];
 
       msg_Buf_.pop();
       m_lock_.unlock();
@@ -225,6 +240,44 @@ void ProcessDvl::process()
       twist_msg.twist.covariance[7] = twist_kf_.covariance()(1,1);
       twist_msg.twist.covariance[14] = twist_kf_.covariance()(2,2);
       twist_pub.publish(twist_msg);
+
+    /**************************** Handle velocity ***********************/
+
+      // setup the pointcloud for 4 points with only XYZ property
+      sensor_msgs::PointCloud2 cloud_msg;
+      sensor_msgs::PointCloud2Modifier modifier(cloud_msg);
+      modifier.setPointCloud2FieldsByString(1, "xyz");    
+      modifier.resize(4); 
+
+      // re-generate 3D location of target point
+      std::vector<Eigen::Vector3d> points;
+
+      double beam_azimuth[] = {PI/4.0, -PI/4.0, -3.0*PI/4.0, 3.0*PI/4.0};
+      for (int i = 0; i < 4; i++) {
+          Eigen::Vector3d pt;
+          pt(0) =  distance[i] * correct_ratio * tan(beam_angle) * cos(beam_azimuth[i]);
+          pt(1) =  distance[i] * correct_ratio * tan(beam_angle) * sin(beam_azimuth[i]);
+          pt(2) =  distance[i] * correct_ratio;
+          points.push_back(pt);
+      }
+
+      // setup the points XYZ
+      sensor_msgs::PointCloud2Iterator<float> ros_pc2_x(cloud_msg, "x");
+      sensor_msgs::PointCloud2Iterator<float> ros_pc2_y(cloud_msg, "y");
+      sensor_msgs::PointCloud2Iterator<float> ros_pc2_z(cloud_msg, "z");
+
+      for (size_t i = 0; i < 4; i++, ++ros_pc2_x, ++ros_pc2_y, ++ros_pc2_z) {
+          const Eigen::Vector3d& point = points.at(i);
+          *ros_pc2_x = point(0);
+          *ros_pc2_y = point(1);
+          *ros_pc2_z = point(2);
+      }
+
+      // setup header
+      cloud_msg.header = header_dvl;
+
+      if(pub_pointcloud)
+        cloud_pub.publish(cloud_msg);
     }
 
     if(depth_initialized) {

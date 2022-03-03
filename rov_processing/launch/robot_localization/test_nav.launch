@@ -3,10 +3,11 @@
 <launch>
 
     <!-- Start ROS Bag -->
-    <!-- <param name="use_sim_time" value="true" />
-    <arg name="bag"        default="/home/soslab/Develop/data/underice/glrc/40m_servo60_noLED_noAR_LowFeq10m_noTF.bag" />
+    <param name="use_sim_time" value="true" />
+    <arg name="bag"        default="/home/soslab/test4_highF.bag" />
     <arg name="bag_start"  default="0" /> 
-    <node pkg="rosbag" type="play" name="rosbag" args="-1-clock -1-pause -d 1 -s $(arg bag_start) $(arg bag)" required="true"/> -->
+    <node pkg="rosbag" type="play" name="rosbag" output="screen" 
+          args="--clock --pause -d 1 -s $(arg bag_start) $(arg bag)" required="true"/>
 
     <!-- TF -->
     <include file="$(find rov_onboard)/launch/sensors/urdf/urdf_test.launch" />
