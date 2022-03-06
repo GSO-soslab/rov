@@ -36,7 +36,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 
 
   <node pkg="nodelet" type="nodelet" name="$(arg camera_manager)"
-        args="manager" required="true" output="screen" >
+        args="manager" required="true" >
         <param name="num_worker_threads" value="4" />
   </node>
 

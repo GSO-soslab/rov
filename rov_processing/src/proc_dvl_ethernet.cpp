@@ -241,7 +241,7 @@ void ProcessDvl::process()
       twist_msg.twist.covariance[14] = twist_kf_.covariance()(2,2);
       twist_pub.publish(twist_msg);
 
-    /**************************** Handle velocity ***********************/
+    /**************************** Handle pointcloud ***********************/
 
       // setup the pointcloud for 4 points with only XYZ property
       sensor_msgs::PointCloud2 cloud_msg;

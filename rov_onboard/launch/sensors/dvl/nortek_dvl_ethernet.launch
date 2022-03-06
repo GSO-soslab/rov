@@ -1,7 +1,9 @@
 <launch>
 
   <arg name="time_init_delay" default = "3.0" />
+  <arg name="remap_time" default = "true" />
 
+    <!-- DVL ROS driver -->
     <group ns="rov/sensors">
         <include file="$(find ds_sensors)/launch/sensor.launch">
             <arg name="name" value="dvl"/>
@@ -20,4 +22,30 @@
             </group>
         </group>
     </group>
+
+    <!-- synchronizer_dvl: remap ros timestamp to trigger time -->
+    <node if="$(arg remap_time)"  pkg="synchronizer_ros" type="synchronizer_dvl_node" 
+          name="synchronizer_dvl" output="screen"        respawn="true" >
+
+      <param name="device_name"      value="dvl"  type="string" />
+      <!-- <param name="pub_derived_msg"      value="true"  type="bool" /> -->
+      <!-- <param name="sound_speed"      value="1500" type="double" /> -->
+      <!-- <param name="trigger_delay" value="8.4"   type="double" /> -->
+
+      <!-- subscribe -->
+      <remap from="trigger_time" to="/rov/synchronizer/dvl/time"/>
+      <remap from="bottom_track" to="/rov/sensors/dvl/df21"/>
+      <remap from="current_profile" to="/rov/sensors/dvl/df3"/>
+      <!-- publish raw msg -->
+      <remap from="init" to="/rov/synchronizer/dvl/init"/>
+      <remap from="bottom_track_sync" to="/rov/sensors/dvl/df21/df21_sync"/>
+      <remap from="current_profile_sync" to="/rov/sensors/dvl/df3_sync"/>
+      <!-- publish derived msg -->
+      <remap from="dvl" to="/rov/sensors/dvl/dvl/dvl_sync"/>
+      <remap from="velocity" to="/rov/sensors/dvl/velocity/velocity_sync"/>
+      <remap from="depth" to="/rov/sensors/dvl/depth/depth_sync"/>
+      <remap from="pointcloud" to="/rov/sensors/dvl/pointcloud/pointcloud_sync"/>
+
+    </node> 
+
 </launch>
