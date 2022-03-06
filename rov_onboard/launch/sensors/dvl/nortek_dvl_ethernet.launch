@@ -28,7 +28,7 @@
           name="synchronizer_dvl" output="screen"        respawn="true" >
 
       <param name="device_name"      value="dvl"  type="string" />
-      <!-- <param name="pub_derived_msg"      value="true"  type="bool" /> -->
+      <param name="pub_derived_msg"      value="true"  type="bool" />
       <!-- <param name="sound_speed"      value="1500" type="double" /> -->
       <!-- <param name="trigger_delay" value="8.4"   type="double" /> -->
 

@@ -33,7 +33,9 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
   <arg name="left_camera_serial" default="20181918" />
   <arg name="left_camera_calibrated" default="0" />
   <arg name="start_delay_right" default="3.0" />
-
+  <arg name="exposure_max" default="40000" />
+  <arg name="exposure_min" default="100" />
+  <arg name="exposure_fix" default="8000" />
 
   <node pkg="nodelet" type="nodelet" name="$(arg camera_manager)"
         args="manager" required="true" >
@@ -61,11 +63,10 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
         <param name="enable_trigger" value="On" />
         <param name="trigger_activation_mode" value="RisingEdge" />
         <!-- +++++++++++ Exposure +++++++++++ -->
-        <param name="exposure_mode" value="Timed" />         <!-- Timed: exposure time in a specified value -->
+        <param name="exposure_mode" value="Timed" />                <!-- Timed: exposure time in a specified value -->
         <param name="exposure_auto" value="Continuous" />           <!-- Off: given fixed exposure time; Continuous: auto exposure time -->
-        <param name="auto_exposure_time_upper_limit" value="5000" /> 
-        <param name="auto_exposure_time_lower_limit" value="1000" />
-        <!-- <param name="exposure_time" value="3000" />         10000: exposure time in microseconds -->
+        <param name="auto_exposure_time_upper_limit" value="$(arg exposure_max)" /> 
+        <param name="exposure_time" value="$(arg exposure_fix)" />         <!-- exposure time in microseconds -->
         <param name="line_selector" value="Line2" />         <!--Line2: Red color and Pin 3-->
         <param name="line_mode" value="Output" />            <!--Output: output exposure state-->
         <param name="line_source" value="ExposureActive" />  <!--ExposureActive: indicates when the image sensor is exposing-->
@@ -125,13 +126,12 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
         <param name="trigger_source" value="Line3" />                <!-- Line3: Green color and Pin 1 -->
         <param name="enable_trigger" value="On" />
         <param name="trigger_activation_mode" value="RisingEdge" />
-        <param name="trigger_overlap_mode" value="ReadOut" />
+        <!-- <param name="trigger_overlap_mode" value="ReadOut" /> -->
         <!-- +++++++++++ Exposure  +++++++++++ -->
         <param name="exposure_mode" value="TriggerWidth" />         <!-- Timed: exposure time in a specified value; TriggerWidth: same as primary camera -->
-        <!-- <param name="exposure_auto" value="Off" />           Off: given fixed exposure time; Continuous: auto exposure time -->
-        <!-- <param name="auto_exposure_time_upper_limit" value="10000" /> --> 
-        <!-- <param name="auto_exposure_time_lower_limit" value="300" /> -->
-        <!-- <param name="exposure_time" value="3000" />         10000: exposure time in microseconds -->
+        <param name="exposure_auto" value="Continuous" />            <!-- Off: given fixed exposure time; Continuous: auto exposure time -->
+        <param name="auto_exposure_time_upper_limit" value="$(arg exposure_max)" /> 
+        <!-- <param name="exposure_time" value="$(arg exposure_fix)" />         exposure time in microseconds -->
         <param name="line_selector" value="Line2" />         <!-- Line2: Red color and Pin 3 -->
         <param name="line_mode" value="Output" />            <!-- Output: output exposure state -->
         <param name="line_source" value="ExposureActive" />  <!-- ExposureActive: indicates when the image sensor is exposing -->
