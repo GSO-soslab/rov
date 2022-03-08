@@ -13,6 +13,13 @@ roslaunch calibrate_imu calibrator.launch
 
 
 **Jetson Side:**
+# set time
+sudo timedatectl set-timezone EST
+sudo timedatectl set-timezone America/Anchorage 
+sudo date --set="2022-03-07 15:25:30.990"
+sudo timedatectl set-timezone UTC
+
+# Start mission
 ```sh
 # ssh to jetson
 ssh soslab@192.168.2.3
@@ -25,14 +32,24 @@ roslaunch rov_onboard sensors.launch
 # after do time sync, start robot_localization
 roslaunch rov_processing beachPond_nav.launch
 ```
+# Record data
+```sh
+rosbag record \
+/rov/sensors/ahrs/imu/data /rov/sensors/ahrs/mag \
+/rov/sensors/dvl/df21/df21_sync /rov/sensors/dvl/df3_sync /rov/sensors/dvl/dvl/dvl_sync /rov/sensors/dvl/pointcloud/ pointcloud_sync /rov/sensors/dvl/velocity/velocity_sync /rov/sensors/dvl/depth/depth_sync \
+/rov/sensors/sonar/ping /rov/sensors/sonar/raw_img \
+/rov/sensors/stereo/left/image_numbered/image_raw_sync /rov/sensors/stereo/right/image_numbered/image_raw_sync
+```
 
 **Topside:**
 ```sh
 # start monitoring
 roslaunch rov_remote visualization.launch
 ```
-
-
+```sh
+# start USBL server
+sudo /etc/init.d/sinaps start
+```
 
 
 
