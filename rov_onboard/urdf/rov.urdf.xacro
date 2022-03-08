@@ -12,7 +12,7 @@
 
     <link name="right_camera"/>
 
-    <link name="dvl"/>
+    <link name="nortek_dvl"/>
 
     <link name="sonar"/>
 
@@ -40,8 +40,8 @@
   <!-- dvl -->
   <joint name="base_to_dvl" type="fixed">
     <parent link="base_link"/>
-    <child link="dvl"/>
-    <origin xyz="-0.038 -0.159 0.019" rpy="-${PI} 0 0"/>
+    <child link="nortek_dvl"/>
+    <origin xyz="-0.0635 -0.155575 0.409575" rpy="0 0 0"/>
   </joint>
 
   <!-- sonar -->

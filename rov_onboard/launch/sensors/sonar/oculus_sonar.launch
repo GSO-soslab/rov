@@ -5,7 +5,7 @@
 
     <!-- Start the sonar reading -->
     <node name="sonar" pkg="sonar_oculus" type="sonar_oculus_node" output="screen">
-      <param name="frame" type="string" value="/sonar"/>
+      <param name="frame" type="string" value="sonar"/>
     </node>
 
     <!-- Open Oculus viewer -->
