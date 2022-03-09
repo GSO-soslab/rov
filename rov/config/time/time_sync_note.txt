@@ -50,3 +50,9 @@ print 'Done ! check with 'chronyc source' '
 
 stty -F /dev/ttyTHS0 115200
 stty -F /dev/ttyTHS0 9600
+
+
+
+===========================
+stty -F /dev/vfan_gps speed 9600
+cat < /dev/ttyACM0

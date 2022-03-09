@@ -17,5 +17,5 @@ DEVICES="/dev/ttyTHS0"
 GPSD_OPTIONS="-n /dev/pps1"
 
 # Baud rate
-BAUDRATE="256000"
+BAUDRATE="115200"
 

@@ -37,6 +37,21 @@ roslaunch calibrate_imu calibrator.launch
 ```
 ---
 
+#### UDEV rules
+```sh
+# check device: Bus 001 Device 011: ID 1546:01a7 U-Blox AG
+lsusb 
+# add udev rules
+sudo bash -c 'echo "SUBSYSTEMS==\"usb\", ACTION==\"add\", ATTRS{idVendor}==\"1546\", ATTRS{idProduct}==\"01a7\", SYMLINK+=\"vfan_gps\"" > /etc/udev/rules.d/99-usb-gps.rules'
+sudo reboot
+```
+
+#### Kill process
+```sh
+ps aux | grep -i name
+sudo kill -9 pid
+```
+
 ## 3. Pi
 
 **Connection**:

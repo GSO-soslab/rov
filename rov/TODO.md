@@ -3,7 +3,6 @@
 ## TODO
 
 ### 1) USBL:
-- parse GPS information, saved in file/ROS *-THIS-*
 - analysis data
 - USBL power cable 
 
