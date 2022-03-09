@@ -100,3 +100,15 @@ arduino --verify synchronizer_arduino/synchronizer_arduino.ino
 ```
 
 
+-----
+
+## 4. Camera:
+- lab light condition + led 1900: expsoure can go to 4900+
+  
+- lab light condition, normal expsoure is 15000+
+  
+- **set max exposure as ligh as possible, when light enough, exposure time will adjust itself.**
+  
+- **in low light condition, larger max_exposure will help. But in some level, it will not help anymore. reduce it to get good image, otherwise may get motion blur**
+  
+- **when adjust max_ exposure, remember apply this max_epxosure to both cam(primary and secondary)**
