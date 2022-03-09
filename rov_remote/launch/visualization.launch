@@ -34,6 +34,6 @@
   </node> -->
 
   <node name="rviz" pkg="rviz" type="rviz"  
-        args="--opengl 300 -d $(find rov_remote)/launch/beach_pond.rviz" /> 
+        args="--opengl 300 -d $(find rov_remote)/launch/default.rviz" /> 
         
 </launch>
