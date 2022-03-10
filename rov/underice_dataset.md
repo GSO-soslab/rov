@@ -27,9 +27,9 @@
 
 - Data Format:
     - time:
-        - Stereo-cam IO timestamp
         - DVL IO timestamp
         - AHRS IO timestamp
+        - Stereo-cam IO timestamp
         - Sonar IO timestamp
     - experiments:
             - cloudy: image without LED; half, full LED
@@ -41,7 +41,6 @@
             - exposure time
             - response
             - vignette
-            - gain ?
         - extrinsic: IMU-Cam
     - DVL:
         - extrinsic: IMU-DVL
@@ -49,7 +48,7 @@
         - extrinsic: IMU-Sonar
         - timeoffset: IMU-Sonar
     - LED:
-        - Light model/source
+        - Light model/source: [A Benchmark for Visual-Inertial Odometry Systems Employing Onboard Illumination](https://ieeexplore.ieee.org/document/8968554)
 
 
 - Evaluation Metrics:
