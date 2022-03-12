@@ -10,7 +10,7 @@
 - set jetson time to UTC:  `sudo date --set="2022-02-14 10:21:30.990"`
 - launch onboard synchronizer: `roslaunch rov_onboard synchronizer.launch` 
 - launch topside visualizer: `roslaunch rov_remote visualization.launch`
-- set arduino clock: clcik in RQT
+- set arduino clock: click `Computer_Clock` in RQT
 - set Jetson NTP time sync: `sudo sh ~/Desktop/run_time_sync.sh`
 - launch onboard sensors: `roslaunch rov_onboard sensors.launch`
 - verify time synchronization: 
@@ -23,11 +23,11 @@
 - launch Topside USBL: `sudo /etc/init.d/sinaps start`
 - record data: 
     ```sh
-    rosbag record \
+    rosbag record -O name.bag \
     /rov/sensors/ahrs/imu/data /rov/sensors/ahrs/mag /rov/sensors/ahrs/imu/calib \
     /rov/sensors/dvl/df21/df21_sync /rov/sensors/dvl/df3_sync \
     /rov/sensors/sonar/ping /rov/sensors/sonar/raw_img \
-    /rov/sensors/stereo/left/image_numbered/image_raw_sync /rov/sensors/stereo/right/image_numbered/image_raw_sync
+    /rov/sensors/stereo/left/image_numbered/image_raw_sync /rov/sensors/stereo/right/image_numbered/image_raw_sync /rov/sensors/stereo/right/calib
     ```
 
 

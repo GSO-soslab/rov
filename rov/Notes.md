@@ -114,6 +114,13 @@ arduino --verify synchronizer_arduino/synchronizer_arduino.ino
  cp ~/path/ArduinoHardware.h ../ros_lib
 ```
 
+**ROS-serial issue:**
+> [INFO] [1647037283.090613]: wrong checksum for msg length, length 32  
+> [INFO] [1647037283.098949]: chk is 125  
+> [ERROR] [1647037283.109608]: Mismatched protocol version in packet ('\xff'): lost sync or rosserial_python is from different ros release than the rosserial client  
+> [INFO] [1647037283.115555]: Protocol version of client is Rev 0 (rosserial 0.4 and earlier), expected Rev 1 (rosserial 0.5+)  
+
+[soluation]((https://answers.ros.org/question/199490/ros-arduino-message-type-restrictions/))
 
 -----
 
@@ -127,3 +134,99 @@ arduino --verify synchronizer_arduino/synchronizer_arduino.ino
 - **in low light condition, larger max_exposure will help. But in some level, it will not help anymore. reduce it to get good image, otherwise may get motion blur**
   
 - **when adjust max_ exposure, remember apply this max_epxosure to both cam(primary and secondary)**
+
+
+## Time synchronization:
+example: Arduino time: 19.500, Jetson clock: 19.400(synchronized with Arduino, but -100ms offset), image arrived at jetson at 19.420, that's why still eariler then Arduino tigger time.
+
+**Cam:** 
+- time start:(cheony timeoffset between Arduino~Jetson:100ms)
+    - sync time:
+        - secs: 1647036462
+        - nsecs: 561935000
+    - io_time: 
+        - secs: 1647036462
+        - nsecs: 417867599
+
+- time end: 15 min (cheony timeoffset between Arduino~Jetson:90ms)
+    - sync time:
+        - secs: 1647037112
+        - nsecs: 961966000
+    - io_time: 
+        - secs: 1647037112
+        - nsecs: 826078502
+
+- time end: 30 min(cheony timeoffset between Arduino~Jetson:80ms)
+    - sync time:
+        - secs: 1647038331
+        - nsecs: 561907000
+    - io_time: 
+        - secs: 1647038331
+        - nsecs: 457900244
+
+- time end: 45 min (cheony timeoffset between Arduino~Jetson:50ms)
+    - sync time:
+        - secs: 1647039353
+        - nsecs: 461950000
+    - IO time: 
+        - secs: 1647039353
+        - nsecs: 454006663
+
+- time end: 60 min (cheony timeoffset between Arduino~Jetson:60ms)
+    - sync time:
+        - secs: 1647040159
+        - nsecs: 361988000
+    - io_time: 
+        - secs: 1647040159
+        - nsecs: 248997090
+
+
+**AHRS:**
+- time start:(cheony timeoffset between Arduino~Jetson:100ms)
+    - sync time:
+        - secs: 1647036394
+        - nsecs: 281000000
+    - IO time:
+        - secs: 1647036394
+        - nsecs: 190887936
+
+- time end: 15 min (cheony timeoffset between Arduino~Jetson:80ms)
+    - sync time:
+        - secs: 1647037056
+        - nsecs: 451000000
+    - IO time:
+        - secs: 1647037056
+        - nsecs: 369074432
+
+- time end: 30 min (cheony timeoffset between Arduino~Jetson:80ms)
+    - sync time:
+        - secs: 1647038541
+        - nsecs: 152000000
+    - IO time:
+        - secs: 1647038541
+        - nsecs: 132259840
+
+- time end: 45 min (cheony timeoffset between Arduino~Jetson:50ms)
+    - sync time:
+        - secs: 1647039397
+        - nsecs: 405000000
+    - IO time:
+        - secs: 1647039397
+        - nsecs: 450022144
+
+- time end: 60 min (cheony timeoffset between Arduino~Jetson:60ms)
+    - sync time:
+        - secs: 1647040193
+        - nsecs: 198000000
+    - IO time:
+        - secs: 1647040193
+        - nsecs: 143339008
+
+**DVL:**
+- time sync:
+    secs: 1647035424
+    nsecs: 616051912
+- time IO: 
+    secs: 1647035424
+    nsecs: 541389062
+

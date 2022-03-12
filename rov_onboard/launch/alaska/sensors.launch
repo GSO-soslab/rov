@@ -3,7 +3,7 @@
 
 <!-- sensors -->
     <!-- Stereo-camera: timestamp remapped to arduino trigger time -->
-    <!-- <include file="$(find rov_onboard)/launch/sensors/cameras/flir_stereo_sync.launch"/>  -->
+    <include file="$(find rov_onboard)/launch/sensors/cameras/flir_stereo_sync.launch"/> 
 
     <!-- AHRS: timestamp sync with PPS -->
     <include file="$(find rov_onboard)/launch/sensors/ahrs/microstrain_ahrs_sync.launch"/>

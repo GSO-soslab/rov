@@ -38,7 +38,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
   <arg name="exposure_fix" default="8000" />
 
   <node pkg="nodelet" type="nodelet" name="$(arg camera_manager)"
-        args="manager" required="true" >
+        args="manager" required="true" output="screen" >
         <param name="num_worker_threads" value="4" />
   </node>
 
