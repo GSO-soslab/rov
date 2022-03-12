@@ -24,7 +24,79 @@ sudo eject /dev/sda
 watch -n -0.1 date +%s
 ```
 
----
+### Setup Shared Desktop: [reference](https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-vnc-on-ubuntu-18-04)
+
+**Environment setup:** 
+```sh 
+# update
+$ sudo apt-get update
+# install the Xfce desktop environment on your server
+$ sudo apt install xfce4 xfce4-goodies 
+# install the TightVNC server
+$ sudo apt install tightvncserver
+# create password and initial configuration
+vncserver
+```
+
+**Configuring the VNC Server:**
+```sh
+# kill existing server before configure VNC server
+$ vncserver -kill :1
+# backup original file
+$ mv ~/.vnc/xstartup ~/.vnc/xstartup.bak
+# make new file and copy following 
+$ vim ~/.vnc/xstartup
+```
+> #!/bin/bash  
+> xrdb $HOME/.Xresources
+> startxfce4 &  
+
+```sh
+# make it executable
+$ sudo chmod +x ~/.vnc/xstartup
+# restart it 
+$ vncserver
+```
+
+**Connecting the VNC Desktop:**
+- Securely connection: `ssh -L 5901:127.0.0.1:5901 -C -N -l soslab 192.168.2.3`
+- use VNC client to log in server: `localhost:5901` with initialized passward
+
+**Running VNC as a System Service:**
+- create system servce: `sudo vim /etc/systemd/system/vncserver@.service`  
+- copy following into servce:
+    >[Unit]  
+    >Description=Start TightVNC server at startup  
+    >After=syslog.target network.target  
+    >
+    >[Service]  
+    >Type=forking 
+    >User=soslab 
+    >Group=soslab 
+    >WorkingDirectory=/home/soslab 
+    >
+    >PIDFile=/home/soslab/.vnc/%H:%i.pid 
+    >ExecStartPre=-/usr/bin/vncserver -kill :%i > /dev/null 2>&1 
+    >ExecStart=/usr/bin/vncserver -depth 24 -geometry 1280x800 :%i 
+    >ExecStop=/usr/bin/vncserver -kill :%i 
+    > 
+    >[Install] 
+    >WantedBy=multi-user.target 
+- test service:
+    ```sh
+    # reolad systemctl configuation
+    $ sudo systemctl daemon-reload
+    # enable this service at boot
+    $ sudo systemctl enable vncserver@1.service
+    # start first one, you can start a lot
+    $ sudo systemctl start vncserver@1
+    # check
+    $ sudo systemctl status vnserver@1
+    ```
+- start ssh in local: `ssh -L 5901:127.0.0.1:5901 -C -N -l soslab 192.168.2.3`
+- start VNC viewer using `localhost:5901`and created password.
+
+----------
 
 ## 2. Topside
 
