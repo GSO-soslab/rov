@@ -160,6 +160,7 @@ def printMsgsInBagFile(args):
     array_step = []
     array_offset = []
     last_t = 0
+    timestep = 0
     first = True
     bag_in = rosbag.Bag(args.bag_file_in)
     for topic, msg, t in bag_in.read_messages(args.topics_to_read):
@@ -183,20 +184,21 @@ def printMsgsInBagFile(args):
         # Print the message
         print(msg)
 
-        print("timeoffset:{:.9f}".format(msg.header.stamp.to_sec() - msg.time_ref.to_sec()))
+        print("timeoffset:{:.9f}".format(msg.header.stamp.to_sec() - msg.io_time.to_sec()))
 
         if first is True:
             first = False
 
-            array_step.append([0])
-            array_offset.append([msg.time_ref.to_sec() - msg.header.stamp.to_sec()])
+            array_step.append([timestep])
+            array_offset.append([msg.io_time.to_sec() - msg.header.stamp.to_sec()])
 
-            last_t = msg.time_ref.to_sec()
+            last_t = msg.io_time.to_sec()
         else:
-            array_step.append([msg.time_ref.to_sec()- last_t])
-            array_offset.append([msg.time_ref.to_sec() - msg.header.stamp.to_sec()])
+            timestep += msg.io_time.to_sec()- last_t
+            array_step.append([timestep])
+            array_offset.append([msg.io_time.to_sec() - msg.header.stamp.to_sec()])
 
-            last_t = msg.time_ref.to_sec()
+            last_t = msg.io_time.to_sec()
 
     print("")
     print("# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
@@ -213,22 +215,14 @@ def printMsgsInBagFile(args):
 
 
     ### python plot
-    plt.plot(array_step, array_offset)
+    # plt.plot(array_step, array_offset)
+    plt.scatter(array_step, array_offset)
     plt.xlabel('timestamp (s)')
     plt.ylabel('timeoffset (s)')
     plt.title('Sync time ~ IO time offset')
     plt.grid(True)
     plt.savefig("test.png")
     plt.show()
-
-
-    # fig = plt.figure()
-    # ax = fig.add_subplot(111)
-    # ax.plot(array_step, array_offset, '-', color='g',linewidth=4) 
-    # plt.tight_layout()
-    # plt.show()
-    # plt.draw()
-    # fig.savefig('timeoffset.png', format='png', dpi=300)
 
 
 # If this file is called directly, as opposed to imported, run this:
