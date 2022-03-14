@@ -23,12 +23,17 @@
 - launch Topside USBL: `sudo /etc/init.d/sinaps start`
 - record data: 
     ```sh
-    rosbag record -O name.bag \
+    rosbag record \
     /rov/sensors/ahrs/imu/data /rov/sensors/ahrs/mag /rov/sensors/ahrs/imu/calib \
     /rov/sensors/dvl/df21/df21_sync /rov/sensors/dvl/df3_sync \
     /rov/sensors/sonar/ping /rov/sensors/sonar/raw_img \
     /rov/sensors/stereo/left/image_numbered/image_raw_sync /rov/sensors/stereo/right/image_numbered/image_raw_sync /rov/sensors/stereo/right/calib
     ```
-
+- record test data:
+    ```sh
+    rosbag record \
+    /rov/sensors/ahrs/imu/calib \
+    /rov/sensors/stereo/right/calib
+    ```
 
 ---------------------------------------------------------------------------------------------------
