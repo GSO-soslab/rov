@@ -1,0 +1,11 @@
+target_type: 'checkerboard' #gridtype
+targetCols: 10               #number of internal chessboard corners
+targetRows: 7                #number of internal chessboard corners
+rowSpacingMeters: 0.036      #size of one chessboard square [m]
+colSpacingMeters: 0.036      #size of one chessboard square [m]
+
+# kalibr_calibrate_cameras \
+# --target /home/lin/Develop/ros/soslab_ws/src/kalibr/target/checker_10x7.yaml \
+# --bag /media/lin/D/dataset/underIce/GLRC/calib/stereo_air_checker.bag 
+# --models pinhole-radtan pinhole-radtan \
+# --topics /rov/sensors/stereo/left/image_decompressed /rov/sensors/stereo/right/image_decompressed

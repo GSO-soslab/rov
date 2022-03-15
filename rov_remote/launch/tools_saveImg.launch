@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+
+<launch>
+
+    <arg name="rosbag"  default="true" /> 
+    <arg name="bag"        
+         default="/home/soslab/Projects/under_ice_navigation/dataset/underice/calibration/stere_air_checker_1.bag" />
+    <arg name="bag_start"  default="0" /> 
+
+    <!-- ROS Bag -->
+    <param name="use_sim_time" value="$(arg rosbag)" />
+    <node if="$(arg rosbag)" pkg="rosbag" type="play" name="rosbag" output="screen" 
+          args="--clock --pause -d 1 -s $(arg bag_start) $(arg bag)" required="true">
+    </node>
+
+    <!-- Save Image Tool -->
+    <node name = "tools_saveImg_node" pkg = "rov_remote" type = "tools_saveImg_node" output = "screen">
+
+        <param name="path"   value="$(find rov_remote)/result/images/"  type="string" />
+        <remap from="image"  to="/rov/sensors/stereo/left/image_decompressed"/>
+    </node>
+
+    <node name = "rqt_node" pkg = "rqt_gui" type = "rqt_gui" respawn = "false" output = "screen" 
+          args = "--perspective-file $(find rov_remote)/launch/visualization_config/tools_saveImg.perspective" >
+    </node>
+
+</launch>

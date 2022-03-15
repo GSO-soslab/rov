@@ -1,0 +1,35 @@
+target_type: 'aprilgrid' #gridtype
+tagCols: 7               #number of apriltags
+tagRows: 5               #number of apriltags
+tagSize: 0.04            #size of apriltag, edge to edge [m]
+tagSpacing: 0.25         #ratio of space between tags to tagSize
+
+### dataset 1: ###
+
+## kalibr_calibrate_cameras 
+## --target /home/lin/Develop/ros/soslab_ws/src/kalibr/target/april_7x5.yaml \
+## --bag /media/lin/D/dataset/underIce/GLRC/calib/data/stereo_air_april_1.bag \
+## --models pinhole-radtan pinhole-radtan 
+## --topics /rov/sensors/stereo/left/image_decompressed /rov/sensors/stereo/right/image_decompressed
+# pinhole-radtan: ok
+
+## kalibr_calibrate_cameras --target /home/lin/Develop/ros/soslab_ws/src/kalibr/target/april_7x5.yaml --bag /media/lin/D/dataset/underIce/GLRC/calib/data/stereo_air_april_1.bag --models pinhole-equi pinhole-equi --topics /rov/sensors/stereo/left/image_decompressed /rov/sensors/stereo/right/image_decompressed
+# pinhole-equi: Optimization diverged possibly due to a bad initialization. (Do the models fit the lenses well?)
+
+## kalibr_calibrate_cameras --target /home/lin/Develop/ros/soslab_ws/src/kalibr/target/april_7x5.yaml --bag /media/lin/D/dataset/underIce/GLRC/calib/data/stereo_air_april_1.bag --models omni-radtan omni-radtan --topics /rov/sensors/stereo/left/image_decompressed /rov/sensors/stereo/right/image_decompressed
+# omni-radtan:
+
+### dataset 2: ###
+
+## kalibr_calibrate_cameras 
+## --target /home/lin/Develop/ros/soslab_ws/src/kalibr/target/april_5x7.yaml 
+## --bag /media/lin/D/dataset/underIce/GLRC/calib/data/stereo_air_april_2.bag 
+## --models pinhole-radtan pinhole-radtan 
+## --topics /rov/sensors/stereo/left/image_decompressed /rov/sensors/stereo/right/image_decompressed
+# pinhole-radtan: Optimization diverged possibly due to a bad initialization. (Do the models fit the lenses well?)
+
+## kalibr_calibrate_cameras --target /home/lin/Develop/ros/soslab_ws/src/kalibr/target/april_5x7.yaml --bag /media/lin/D/dataset/underIce/GLRC/calib/data/stereo_air_april_2.bag --models pinhole-equi pinhole-equi --topics /rov/sensors/stereo/left/image_decompressed /rov/sensors/stereo/right/image_decompressed
+# pinhole-equi: Optimization diverged possibly due to a bad initialization. (Do the models fit the lenses well?)
+
+## kalibr_calibrate_cameras --target /home/lin/Develop/ros/soslab_ws/src/kalibr/target/april_5x7.yaml --bag /media/lin/D/dataset/underIce/GLRC/calib/data/stereo_air_april_2.bag --models omni-radtan omni-radtan --topics /rov/sensors/stereo/left/image_decompressed /rov/sensors/stereo/right/image_decompressed
+# omni-radtan:
