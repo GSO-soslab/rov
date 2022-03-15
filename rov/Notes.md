@@ -9,6 +9,8 @@
 df -H
 # check folder size
 du -hs /path/to/directory
+# check single file size
+ls -l -h filename
 # check all the files size by order
 du -h | sort -h
 # transfer file from Jetson to portable external usb drive

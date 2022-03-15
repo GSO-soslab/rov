@@ -7,7 +7,8 @@
 - collect mag calibration dataset
 
 ### Launch Mission
-- set jetson time to UTC:  `sudo date --set="2022-02-14 10:21:30.990"`
+- ssh to Jetson: `ssh soslab@192.168.2.3`
+- set jetson time to UTC:  `sudo date --set="2022-03-15 14:16:30.990"`
 - launch onboard synchronizer: `roslaunch rov_onboard synchronizer.launch` 
 - launch topside visualizer: `roslaunch rov_remote visualization.launch`
 - set arduino clock: click `Computer_Clock` in RQT
@@ -21,6 +22,7 @@
     - Stereo: check if it's initialized
 - launch onboard odomtery: `roslaunch rov_processing alaska_nav.launch`
 - launch Topside USBL: `sudo /etc/init.d/sinaps start`
+- save GPS date: `python /home/soslab/Projects/under_ice_navigation/rov_ws/src/rov/rov_remote/tools/scripts/save_gps.py`
 - record data: 
     ```sh
     rosbag record \
@@ -32,8 +34,10 @@
 - record test data:
     ```sh
     rosbag record \
-    /rov/sensors/ahrs/imu/calib \
-    /rov/sensors/stereo/right/calib
+    /rov/sensors/stereo/left/image_numbered/image_raw_sync \
+    /rov/sensors/stereo/left/image_numbered/image_raw_sync/compressed \
+    /rov/sensors/stereo/right/image_numbered/image_raw_sync \
+    /rov/sensors/stereo/right/image_numbered/image_raw_sync/compressed
     ```
 
 ---------------------------------------------------------------------------------------------------
