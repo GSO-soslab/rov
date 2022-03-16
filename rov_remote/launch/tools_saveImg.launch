@@ -4,7 +4,7 @@
 
     <arg name="rosbag"  default="true" /> 
     <arg name="bag"        
-         default="/home/soslab/Projects/under_ice_navigation/dataset/underice/calibration/stere_air_checker_1.bag" />
+         default="/home/soslab/Projects/under_ice_navigation/dataset/underice/alaska/calibration/tank_cams_calib_2.bag" />
     <arg name="bag_start"  default="0" /> 
 
     <!-- ROS Bag -->
@@ -17,7 +17,7 @@
     <node name = "tools_saveImg_node" pkg = "rov_remote" type = "tools_saveImg_node" output = "screen">
 
         <param name="path"   value="$(find rov_remote)/result/images/"  type="string" />
-        <remap from="image"  to="/rov/sensors/stereo/left/image_decompressed"/>
+        <remap from="image"  to="/rov/sensors/stereo/left/image_numbered/image_raw_sync"/>
     </node>
 
     <node name = "rqt_node" pkg = "rqt_gui" type = "rqt_gui" respawn = "false" output = "screen" 

@@ -164,6 +164,10 @@ def printMsgsInBagFile(args):
     first = True
     bag_in = rosbag.Bag(args.bag_file_in)
     for topic, msg, t in bag_in.read_messages(args.topics_to_read):
+
+        # if total_count > 4900:
+        #     break
+
         print("\n# =======================================")
         total_count += 1
         no_msgs_found = False
@@ -184,21 +188,25 @@ def printMsgsInBagFile(args):
         # Print the message
         print(msg)
 
-        print("timeoffset:{:.9f}".format(msg.header.stamp.to_sec() - msg.io_time.to_sec()))
+        ### Cam IO time
+        # io_time = msg.io_time.to_sec()
+        ### DVL IO time
+        io_time = msg.ds_header.io_time.to_sec()
+        ### AHRS IO time
+        # io_time = msg.time_ref.to_sec()
 
         if first is True:
             first = False
 
             array_step.append([timestep])
-            array_offset.append([msg.io_time.to_sec() - msg.header.stamp.to_sec()])
-
-            last_t = msg.io_time.to_sec()
+            array_offset.append([io_time - msg.header.stamp.to_sec()]) 
         else:
-            timestep += msg.io_time.to_sec()- last_t
+            timestep += io_time - last_t
             array_step.append([timestep])
-            array_offset.append([msg.io_time.to_sec() - msg.header.stamp.to_sec()])
+            array_offset.append([io_time - msg.header.stamp.to_sec()]) 
 
-            last_t = msg.io_time.to_sec()
+        last_t = io_time 
+        
 
     print("")
     print("# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
