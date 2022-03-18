@@ -14,7 +14,7 @@
   <arg name="imu_frame_id"        default = "microstrain_ahrs" />
   <arg name="filter_frame_id"     default = "sensor_wgs84" />
   <arg name="use_enu_frame"       default = "false" />
-  <arg name="time_init_delay" default = "3.0" />
+  <arg name="time_init_delay" default = "13.0" />
 
 <group ns="rov/sensors" >
   <!-- ****************************************************************** -->

@@ -12,7 +12,7 @@
     <include file="$(find rov_onboard)/launch/sensors/dvl/nortek_dvl_ethernet.launch"/>
     
     <!-- Sonar -->
-    <!-- <include file="$(find rov_onboard)/launch/sensors/sonar/oculus_sonar.launch"/>  -->
+    <include file="$(find rov_onboard)/launch/sensors/sonar/oculus_sonar.launch"/> 
 
 
 </launch>

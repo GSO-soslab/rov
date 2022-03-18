@@ -7,6 +7,7 @@
 - collect mag calibration dataset
 
 ### Launch Mission
+- power on system, mark power-on `time`
 - ssh to Jetson: `ssh soslab@192.168.2.3`
 - set jetson time to UTC:  `sudo date --set="2022-03-15 14:16:30.990"`
 - launch onboard synchronizer: `roslaunch rov_onboard synchronizer.launch` 
@@ -25,12 +26,14 @@
 - save GPS date: `python /home/soslab/Projects/under_ice_navigation/rov_ws/src/rov/rov_remote/tools/scripts/save_gps.py`
 - record data: 
     ```sh
+    # 1 hour will record 409 GB
     rosbag record \
     /rov/sensors/ahrs/imu/data /rov/sensors/ahrs/mag /rov/sensors/ahrs/imu/calib \
     /rov/sensors/dvl/df21/df21_sync /rov/sensors/dvl/df3_sync \
-    /rov/sensors/sonar/ping /rov/sensors/sonar/raw_img \
+    /rov/sensors/sonar/ping \
     /rov/sensors/stereo/left/image_numbered/image_raw_sync /rov/sensors/stereo/right/image_numbered/image_raw_sync /rov/sensors/stereo/right/calib
     ```
+
 - record test data:
     ```sh
     rosbag record \
