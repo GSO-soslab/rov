@@ -159,16 +159,28 @@ def printMsgsInBagFile(args):
     total_count = 0
     array_step = []
     array_offset = []
-    last_t = 0
+    array_offset_io = []
+    array_offset_sync = []
+    array_test = []
+    array_test_dvl_sys_t = []
+    last_sys_t = 0
+    last_io_t = 0
+    last_sync_t = 0
+    last_test = 0
     timestep = 0
     first = True
+    sync_time = 0
+    ### TEST
+    test =0
+    test_system_t = 0
+
     bag_in = rosbag.Bag(args.bag_file_in)
     for topic, msg, t in bag_in.read_messages(args.topics_to_read):
 
         # if total_count > 4900:
         #     break
 
-        print("\n# =======================================")
+        # print("\n# =======================================")
         total_count += 1
         no_msgs_found = False
         # Keep track of individual message counters for each message type
@@ -177,36 +189,59 @@ def printMsgsInBagFile(args):
         else:
             msg_counters[topic] += 1;
 
-        # Print topic name and message receipt info
-        print("# topic:           " + topic)
-        print("# msg_count:       %u" % msg_counters[topic])
-        # the comma at the end prevents the newline char being printed at the end in Python2; see:
-        # https://www.geeksforgeeks.org/print-without-newline-python/
-        print("# timestamp (sec): {:.9f}".format(t.to_sec())),
-        print("# - - -")
+        # # Print topic name and message receipt info
+        # print("# topic:           " + topic)
+        # print("# msg_count:       %u" % msg_counters[topic])
+        # # the comma at the end prevents the newline char being printed at the end in Python2; see:
+        # # https://www.geeksforgeeks.org/print-without-newline-python/
+        # print("# timestamp (sec): {:.9f}".format(t.to_sec())),
+        # print("# - - -")
 
-        # Print the message
-        print(msg)
+        # # Print the message
+        # print(msg)
 
         ### Cam IO time
         # io_time = msg.io_time.to_sec()
+        # sync_time = msg.header.stamp.to_sec()
+
         ### DVL IO time
-        io_time = msg.ds_header.io_time.to_sec()
+        # io_time = msg.ds_header.io_time.to_sec()
+        # sync_time = msg.header.stamp.to_sec()
+
+        # test = msg.header.seq
+        # test_system_t = msg.dvl_time
+
         ### AHRS IO time
-        # io_time = msg.time_ref.to_sec()
+        io_time = msg.time_ref.to_sec()
+        sync_time = msg.header.stamp.to_sec()
+        
+        ### Arduino time
+        # io_time = msg.time.to_sec()
 
         if first is True:
             first = False
 
             array_step.append([timestep])
-            array_offset.append([io_time - msg.header.stamp.to_sec()]) 
-        else:
-            timestep += io_time - last_t
-            array_step.append([timestep])
-            array_offset.append([io_time - msg.header.stamp.to_sec()]) 
+            array_offset.append([io_time - sync_time]) 
 
-        last_t = io_time 
-        
+            array_offset_io.append([0]) 
+            array_offset_sync.append([0]) 
+            # array_test.append([0])
+            # array_test_dvl_sys_t.append([test_system_t])
+        else:
+            #### TEST:
+            array_offset_io.append([io_time - last_io_t]) 
+            array_offset_sync.append([sync_time - last_sync_t]) 
+            # array_test.append([test])
+            # array_test_dvl_sys_t.append([test_system_t])
+
+            timestep += io_time - last_io_t
+            array_step.append([timestep])
+            array_offset.append([io_time - sync_time]) 
+
+        last_io_t = io_time 
+        last_sync_t = sync_time
+        # last_sys_t = test_system_t
 
     print("")
     print("# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
@@ -223,15 +258,33 @@ def printMsgsInBagFile(args):
 
 
     ### python plot
-    # plt.plot(array_step, array_offset)
+    plt.subplot(1, 1, 1)
     plt.scatter(array_step, array_offset)
     plt.xlabel('timestamp (s)')
     plt.ylabel('timeoffset (s)')
     plt.title('Sync time ~ IO time offset')
+
+    # plt.subplot(2, 2, 2)
+    # plt.scatter(array_step, array_offset_io)
+    # plt.xlabel('timestamp (s)')
+    # plt.ylabel('timeoffset (s)')
+    # plt.title('IO time offset')
+
+    # plt.subplot(2, 2, 3)
+    # plt.scatter(array_step, array_test_dvl_sys_t)
+    # plt.xlabel('timestamp (s)')
+    # plt.ylabel('sys time (s)')
+    # plt.title('DVL system time')
+
+    # plt.subplot(2, 2, 4)
+    # plt.scatter(array_step, array_test)
+    # plt.xlabel('timestamp (s)')
+    # plt.ylabel('seq (s)')
+    # plt.title('Seq')
+
     plt.grid(True)
     plt.savefig("test.png")
     plt.show()
-
 
 # If this file is called directly, as opposed to imported, run this:
 if __name__ == '__main__':

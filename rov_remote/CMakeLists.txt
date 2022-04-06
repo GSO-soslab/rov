@@ -34,13 +34,13 @@ install(FILES
     DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
 
 # tools
-add_executable(tools_saveImg_node tools/save_images.cpp)
+add_executable(tools_saveImg_node tools/cpp/save_images.cpp)
 target_link_libraries(tools_saveImg_node
   ${catkin_LIBRARIES}
   ${OpenCV_LIBS}
 )
 
-add_executable( tools_calibCam_node tools/calibrate_camera.cpp )
+add_executable( tools_calibCam_node tools/cpp/calibrate_camera.cpp )
 target_link_libraries( tools_calibCam_node ${OpenCV_LIBS} )
 
 # test

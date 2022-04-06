@@ -4,11 +4,11 @@
 
     <arg name="rosbag"  default="true" /> 
     <arg name="bag"        
-         default="/home/soslab/Projects/under_ice_navigation/dataset/underice/alaska/calibration/tank_cams_calib_2.bag" />
+         default="/media/soslab/TOSHIBA_EXT/Dataset/underIce/alaska/calibration/tank_calibration/tank_cams_calib_2.bag" />
     <arg name="bag_start"  default="0" /> 
 
     <!-- ROS Bag -->
-    <param name="use_sim_time" value="$(arg rosbag)" />
+    <param name="use_sim_time" value="$(arg rosbag)" /> 
     <node if="$(arg rosbag)" pkg="rosbag" type="play" name="rosbag" output="screen" 
           args="--clock --pause -d 1 -s $(arg bag_start) $(arg bag)" required="true">
     </node>
@@ -17,7 +17,7 @@
     <node name = "tools_saveImg_node" pkg = "rov_remote" type = "tools_saveImg_node" output = "screen">
 
         <param name="path"   value="$(find rov_remote)/result/images/"  type="string" />
-        <remap from="image"  to="/rov/sensors/stereo/left/image_numbered/image_raw_sync"/>
+        <remap from="image"  to="/rov/sensors/stereo/right/image_numbered/image_raw_sync"/>
     </node>
 
     <node name = "rqt_node" pkg = "rqt_gui" type = "rqt_gui" respawn = "false" output = "screen" 

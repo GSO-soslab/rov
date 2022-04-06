@@ -1,5 +1,11 @@
+# source /home/soslab/Projects/under_ice_navigation/kalibr_ws/devel/setup.bash
+
 kalibr_calibrate_cameras \
---bag /home/lin/Develop/data/calibration/stereo_tank_april_1.bag \
---topics /rov/sensors/stereo/left/image_decompressed /rov/sensors/stereo/right/image_decompressed \
+--bag /home/soslab/Projects/under_ice_navigation/dataset/underice/alaska/calibration/air_img/stereo_air_calibration_1_restamp.bag \
+--topics /rov/sensors/stereo/left/image_numbered/image_raw_sync /rov/sensors/stereo/right/image_numbered/image_raw_sync \
 --models pinhole-radtan pinhole-radtan \
---target /home/lin/Develop/ros/soslab_ws/src/kalibr/target/april_7x5.yaml
+--target /home/soslab/Projects/under_ice_navigation/rov_ws/src/rov/rov/config/calibration/kalibr/target_april_7x5.yaml \
+--bag-from-to 5 74
+
+# try raw data
+# try remap timestamp 

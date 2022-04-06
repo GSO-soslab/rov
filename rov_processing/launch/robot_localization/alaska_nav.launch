@@ -3,11 +3,13 @@
 <launch>
 
     <!-- Start ROS Bag -->
-    <!-- <param name="use_sim_time" value="true" />
-    <arg name="bag"        default="/home/soslab/test4_highF.bag" />
-    <arg name="bag_start"  default="0" /> 
+    <param name="use_sim_time" value="true" />
+    <arg name="bag"        
+         default="/home/soslab/Projects/under_ice_navigation/dataset/underice/alaska/day_3_23_2022/test2_timestamp_mapped.bag" />
+    <arg name="bag_start"  
+         default="0" /> 
     <node pkg="rosbag" type="play" name="rosbag" output="screen" 
-          args="-1-clock -1-pause -d 1 -s $(arg bag_start) $(arg bag)" required="true"/> -->
+          args="--clock --pause -d 1 -s $(arg bag_start) $(arg bag)" required="true"/>
 
     <!-- TF -->
     <include file="$(find rov_onboard)/launch/sensors/urdf/urdf_alaska.launch" />

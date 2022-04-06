@@ -2,12 +2,20 @@
 <launch>
 
     <!-- Pre-processing DVL: correct sound speed, filter noise, depth measurement, depth initialization? -->
-    <param name="air_pressure" value="0.1"/>
+    <param name="air_pressure" value="0.08"/>
     <param name="estimated_soundSpeed" value="1500"/>
-    <param name="z_B_D" value="0.019"/>
+    <param name="z_B_D" value="0.409575"/>
     <param name="pub_pointcloud" value="true"/>
-    <node name="proc_dvl_node" pkg="rov_processing" type="proc_dvl_ethernet"  output="screen"/>
-
+    <node  name="proc_dvl_node" pkg="rov_processing" type="proc_dvl_ethernet"  output="screen">
+        <!-- sub -->
+        <remap from="/dvl"         to="/rov/sensors/dvl/df21"/>
+        <!-- <remap from="/dvl"         to="/rov/sensors/dvl/df21/df21_sync"/> -->
+        <!-- pub -->
+        <remap from="/pointcloud"  to="/rov/processed/dvl/pointcloud"/>
+        <remap from="/depth"       to="/rov/processed/dvl/depth_filtered"/>
+        <remap from="/twist"       to="/rov/processed/dvl/twist_filtered"/>
+    </node>
+    <!-- remap topic -->
 
     <!-- Pre-processing IMU: filter raw imu using madgwick filter -->
     <node name="madgwick_imu" pkg="imu_filter_madgwick" type="imu_filter_node" output="screen">
@@ -16,8 +24,6 @@
         <remap from="/imu/data" to="/rov/processed/ahrs/imu_madgwick"/>
 
         <param name="use_mag" value="false"/>
-        <!-- Use 30000 data -->
-        <!-- <param name="use_mag" value="true"/> -->
         <!-- <param name="mag_bias_x" value="-0.07269402"/>  
         <param name="mag_bias_y" value=" 0.03274165"/>  
         <param name="mag_bias_z" value=" 0.06079664"/>  -->
