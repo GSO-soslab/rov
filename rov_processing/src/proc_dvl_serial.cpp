@@ -31,15 +31,16 @@ public:
     twist_pub = nh.advertise<geometry_msgs::TwistWithCovarianceStamped>("/rov/processed/dvl/twist_filtered", 5);
 
     buttom_track_sub = nh.subscribe<nortek_dvl::ButtomTrack> 
-                       ("/rov/sensors/dvl/buttom_track", 1, &ProcessDvl::buttomTrackCallback, this);
+                       ("/buttom_track", 1, &ProcessDvl::buttomTrackCallback, this);
     current_profile_sub = nh.subscribe<nortek_dvl::CurrentProfile> 
-                        ("/rov/sensors/dvl/current_profile", 1, &ProcessDvl::currentProfileCallback, this);
+                        ("/current_profile", 1, &ProcessDvl::currentProfileCallback, this);
 
     // load params
     nh.param<double>("air_pressure", air_pressure, 0.0);
     nh.param<double>("standard_soundSpeed", standard_soundSpeed, 1500);
     nh.param<double>("z_B_D", z_B_D, 1.0);
     nh.param<bool>("print_depth", print_depth, false);
+    nh.param<bool>("filter_velocity", filter_velocity, true);
 
     // init 
     init();
@@ -74,6 +75,7 @@ private:
   bool depth_initialized = false;
   double init_depth;
 
+  ros::Time global_tf_time_;
   // buttom track related
   double temp;
   double standard_soundSpeed;
@@ -90,6 +92,7 @@ private:
   // parameters
   double air_pressure;
   bool print_depth;
+  bool filter_velocity;
 };
 
 void ProcessDvl::init()
@@ -208,6 +211,7 @@ void ProcessDvl::process()
       m_lock_.lock();
 
       std_msgs::Header bt_header = bt_Buf_.front()->header;
+      global_tf_time_ = bt_header.stamp;
       geometry_msgs::Vector3 twist = bt_Buf_.front()->speed;
       auto range = bt_Buf_.front()->vertical_distance;
 
@@ -243,12 +247,20 @@ void ProcessDvl::process()
       // publish msg
       geometry_msgs::TwistWithCovarianceStamped twist_msg;
       twist_msg.header = bt_header;
-      twist_msg.twist.twist.linear.x = twist_kf_.state()(0);  
-      twist_msg.twist.twist.linear.y = twist_kf_.state()(1); 
-      twist_msg.twist.twist.linear.z = twist_kf_.state()(2); 
-      twist_msg.twist.covariance[0] = twist_kf_.covariance()(0,0);
-      twist_msg.twist.covariance[7] = twist_kf_.covariance()(1,1);
-      twist_msg.twist.covariance[14] = twist_kf_.covariance()(2,2);
+      if(filter_velocity) {
+        twist_msg.twist.twist.linear.x = twist_kf_.state()(0);  
+        twist_msg.twist.twist.linear.y = twist_kf_.state()(1); 
+        twist_msg.twist.twist.linear.z = twist_kf_.state()(2); 
+        twist_msg.twist.covariance[0] = twist_kf_.covariance()(0,0);
+        twist_msg.twist.covariance[7] = twist_kf_.covariance()(1,1);
+        twist_msg.twist.covariance[14] = twist_kf_.covariance()(2,2);
+      }
+      else{
+        twist_msg.twist.twist.linear.x = v_x;  
+        twist_msg.twist.twist.linear.y = v_y; 
+        twist_msg.twist.twist.linear.z = v_z; 
+      }
+
       twist_pub.publish(twist_msg);
 
 
@@ -310,7 +322,7 @@ void ProcessDvl::process()
       tf::Quaternion q;
       q.setRPY(0, 0, 0);
       transform.setRotation(q);
-      br.sendTransform(tf::StampedTransform(transform, ros::Time(0), "/world", "/odom"));
+      br.sendTransform(tf::StampedTransform(transform, global_tf_time_, "/world", "/odom"));
 
 
     }

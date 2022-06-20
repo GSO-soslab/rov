@@ -80,5 +80,6 @@ target_link_libraries(pub_path ${catkin_LIBRARIES})
 ############### build test ###############
 ##########################################
 
-
+add_executable(test_buttomtrack test/test_buttomtrack.cpp )
+target_link_libraries(test_buttomtrack ${catkin_LIBRARIES})
 

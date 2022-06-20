@@ -1,13 +1,17 @@
 <?xml version="1.0" ?>
 
 <launch>
+    <!-- Offline or online -->
+    <arg name="offline" default="true"/>
 
     <!-- Start ROS Bag -->
-    <!-- <param name="use_sim_time" value="true" />
-    <arg name="bag"        default="/home/soslab/test4_highF.bag" />
+    <param name="use_sim_time" value="$(arg offline )" />
+    <arg name="bag_0328" default="/home/lin/develop/data/underIce/alaska/03_28/0328_test1_restamp.bag" />
+    <!-- <arg name="bag_0330" default="/home/lin/develop/data/underIce/alaska/03_30/converted_full.bag" /> -->
     <arg name="bag_start"  default="0" /> 
-    <node pkg="rosbag" type="play" name="rosbag" output="screen" 
-          args="-1-clock -1-pause -d 1 -s $(arg bag_start) $(arg bag)" required="true"/> -->
+    <node if="$(arg offline )" pkg="rosbag" type="play" name="rosbag" output="screen" required="true"
+          args="--clock --pause -d 1 -s $(arg bag_start) $(arg bag_0328)"> 
+    </node>
 
     <!-- TF -->
     <include file="$(find rov_onboard)/launch/sensors/urdf/urdf_alaska.launch" />

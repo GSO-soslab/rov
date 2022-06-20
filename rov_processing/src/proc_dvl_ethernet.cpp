@@ -25,16 +25,16 @@ class ProcessDvl
 public:
   ProcessDvl()
   {
-    cloud_pub = nh.advertise<sensor_msgs::PointCloud2>("/rov/processed/dvl/pointcloud", 5);
-    depth_pub = nh.advertise<geometry_msgs::PoseWithCovarianceStamped>("/rov/processed/dvl/depth_filtered", 5);
-    twist_pub = nh.advertise<geometry_msgs::TwistWithCovarianceStamped>("/rov/processed/dvl/twist_filtered", 5);
+    cloud_pub = nh.advertise<sensor_msgs::PointCloud2>("/pointcloud", 5);
+    depth_pub = nh.advertise<geometry_msgs::PoseWithCovarianceStamped>("/depth", 5);
+    twist_pub = nh.advertise<geometry_msgs::TwistWithCovarianceStamped>("/twist", 5);
 
-    sub_dvl = nh.subscribe<ds_sensor_msgs::NortekDF21>("/rov/sensors/dvl/df21", 1, &ProcessDvl::dvlCallback, this);
+    sub_dvl = nh.subscribe<ds_sensor_msgs::NortekDF21>("/dvl", 1, &ProcessDvl::dvlCallback, this);
 
     // load params
     nh.param<double>("air_pressure", air_pressure, 0.0);
     nh.param<double>("standard_soundSpeed", standard_soundSpeed, 1500);
-    nh.param<double>("estimated_soundSpeed", estimated_soundSpeed, 1480);
+    nh.param<double>("estimated_soundSpeed", estimated_soundSpeed, 1500);
     nh.param<double>("z_B_D", z_B_D, 1.0);
     nh.param<bool>("pub_pointcloud", pub_pointcloud, false);
 
@@ -191,11 +191,11 @@ void ProcessDvl::process()
       //// depth initialization
       if(!depth_initialized){ 
         depth_initialized = true;
-        init_depth = pressure - air_pressure;
+        init_depth = (pressure - air_pressure)*10;
       }
 
       //// update filter
-      y_depth << init_depth - (pressure - air_pressure);
+      y_depth << init_depth - (pressure - air_pressure)*10;
       depth_kf_.update(y_depth);
 
       //// publish depth msg
@@ -300,10 +300,7 @@ void ProcessDvl::process()
       q.setRPY(0, 0, 0);
       transform.setRotation(q);
       br.sendTransform(tf::StampedTransform(transform, ros::Time(0), "/world", "/odom"));
-
-
     }
-
 
     std::chrono::milliseconds dura(5);
     std::this_thread::sleep_for(dura);
