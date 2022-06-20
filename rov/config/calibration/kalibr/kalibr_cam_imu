@@ -1,6 +1,8 @@
+# source /home/soslab/Projects/under_ice_navigation/kalibr_ws/devel/setup.bash
+
 kalibr_calibrate_imu_camera \
---bag /home/lin/Desktop/calib/ahrs_stereo_decompressed_restamped.bag \
---cam /home/lin/Desktop/calib/config_stereo.yaml \
---imu /home/lin/Desktop/calib/config_imu.yaml \
---target /home/lin/Desktop/calib/target_april_7x5.yaml \
---bag-from-to 5 160
+--bag /home/soslab/Projects/under_ice_navigation/dataset/underice/alaska/calibration/ahrs_stereo/03302022_ahrs_stereo_calibration_restamp.bag \
+--cam /home/soslab/Projects/under_ice_navigation/rov_ws/src/rov/rov/config/calibration/result/config_stereo_raw.yaml \
+--imu /home/soslab/Projects/under_ice_navigation/rov_ws/src/rov/rov/config/calibration/result/config_imu.yaml \
+--target /home/soslab/Projects/under_ice_navigation/rov_ws/src/rov/rov/config/calibration/kalibr/target_april_7x5.yaml \
+--bag-from-to 11 140

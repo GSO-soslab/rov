@@ -1,0 +1,26 @@
+# Use time synchronized raw image data: 03/26/2022
+# re mapped timestamp as synchronized time
+
+cam0:
+  cam_overlaps: [1]
+  camera_model: pinhole
+  distortion_coeffs: [-0.3323353954020036, 0.1350990767232004, -0.00033610815884977925,
+    -0.00023731961185946462]
+  distortion_model: radtan
+  intrinsics: [1369.8092975701666, 1368.596262644522, 811.3580127290487, 613.0597438234755]
+  resolution: [1616, 1240]
+  rostopic: /rov/sensors/stereo/left/image_numbered/image_raw_sync
+cam1:
+  T_cn_cnm1:
+  - [0.999981411834192, 0.004993790270154139, 0.003498291702528331, 0.07955980552702467]
+  - [-0.004998820657205826, 0.9999864823671409, 0.0014306904036325016, -0.0011490429691539223]
+  - [-0.0034910998460881957, -0.001448151142549588, 0.99999285751456, 9.408620569591434e-05]
+  - [0.0, 0.0, 0.0, 1.0]
+  cam_overlaps: [0]
+  camera_model: pinhole
+  distortion_coeffs: [-0.33799264715135424, 0.15218880039039148, -0.00031167524427348753,
+    -0.00013101417036307872]
+  distortion_model: radtan
+  intrinsics: [1370.6133120850993, 1370.3982978520396, 814.2299884262926, 609.8608218916453]
+  resolution: [1616, 1240]
+  rostopic: /rov/sensors/stereo/right/image_numbered/image_raw_sync

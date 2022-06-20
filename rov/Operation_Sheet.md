@@ -62,6 +62,7 @@
     /rov/sensors/sonar/ping \
     /rov/sensors/stereo/left/image_numbered/image_raw_sync /rov/sensors/stereo/right/image_numbered/image_raw_sync /rov/sensors/stereo/right/calib
     ```
+- timer the rosbag
 
 - record test
     ```sh
