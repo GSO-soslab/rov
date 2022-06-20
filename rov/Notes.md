@@ -102,6 +102,14 @@ $ vncserver
 
 ## 2. Topside
 
+#### Fix rosbag.active
+```sh
+rosbag reindex xxx.bag.active
+# it will left original file as xxx.bag.orig.active
+rosbag fix xxx.bag.active result.bag
+```
+
+
 #### Calibration:
 ```sh
 # collect mag data

@@ -1,5 +1,8 @@
 kalibr_calibrate_cameras \
---bag /home/lin/Develop/data/calibration/stereo_tank_april_1.bag \
---topics /rov/sensors/stereo/left/image_decompressed /rov/sensors/stereo/right/image_decompressed \
+--bag /home/soslab/Projects/under_ice_navigation/dataset/underice/alaska/calibration/air_img/stereo-air-calibration.bag \
+--topics /rov/sensors/stereo/left/image_numbered/image_raw_sync /rov/sensors/stereo/right/image_numbered/image_raw_sync \
 --models pinhole-radtan pinhole-radtan \
 --target /home/lin/Develop/ros/soslab_ws/src/kalibr/target/april_7x5.yaml
+
+
+# --models pinhole-equi pinhole-equi
