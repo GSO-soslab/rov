@@ -1,0 +1,39 @@
+<?xml version="1.0" ?>
+
+<launch>
+<!-- <param name="use_sim_time" value="true" /> -->
+
+<!-- De-compress the images which compressed for tether transport -->
+<group ns="rov_remote/decompressed">
+      <node name="right_republish" type="republish" pkg="image_transport" output="screen"
+            args="compressed  in:=/rov/sensors/stereo/right/image_numbered/image_raw_sync 
+                  raw        out:=/rov_remote/sensors/stereo/right/image_decompressed" />
+
+      <node name="left_republish" type="republish" pkg="image_transport" output="screen"
+            args="compressed  in:=/rov/sensors/stereo/left/image_numbered/image_raw_sync
+                  raw        out:=/rov_remote/sensors/stereo/left/image_decompressed" />
+
+      <node name="sonar_republish" type="republish" pkg="image_transport" output="screen"
+            args="compressed  in:=/rov/sensors/sonar/image_transport 
+                  raw        out:=/rov_remote/sensors/sonar/image_decompressed" />
+</group>
+
+  <!-- Show undistrotion image -->
+  <!-- <node name="image_view" pkg="image_view" type="image_view" respawn="false" output="screen">
+    <remap from="image_raw" to="/rov/sensors/stereo/right/image_decompressed" />
+    <remap from="camera_info" to="/rov/sensors/stereo/right/camera_info" />
+  </node> -->
+
+<!-- visualization -->
+  <node name = "rqt_node" pkg = "rqt_gui" type = "rqt_gui" respawn = "false" output = "screen" 
+        args = "--perspective-file $(find rov_remote)/launch/visualization_config/alaska.perspective"/>
+
+  <!-- <node name="path_node" pkg="rov_remote" type="path_node" output="screen" >
+      <remap from="odometry" to="/rov/processed/ekf_odometry"/>
+      <remap from="path" to="/rov/processed/ekf_path"/>
+  </node> -->
+
+  <node name="rviz" pkg="rviz" type="rviz"  
+        args="--opengl 300 -d $(find rov_remote)/launch/visualization_config/default.rviz" /> 
+        
+</launch>

@@ -1,0 +1,370 @@
+raw: rosbag t=1648667203261069138
+header: 
+  seq: 98
+  stamp: 
+    secs: 1648667203
+    nsecs: 260168674
+  frame_id: "nortek_dvl"
+ds_header: 
+  io_time: 
+    secs: 1648667203
+    nsecs: 260168674
+  source_uuid: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+dvl_type: 0
+good_beams: 4
+altitude_sum: 7.988943099975586
+dvl_time: 1648666281.5493
+speed_gnd: 0.014275039546191692
+course_gnd: -8.157676562566103
+version: 1
+offsetOfData: 36
+serialNumber: 101811
+year: 122
+month: 2
+day: 30
+hour: 18
+minute: 51
+seconds: 21
+microSeconds: 5493
+nBeams: 4
+error: 0
+status: 
+  beam1VelValid: 1
+  beam2VelValid: 1
+  beam3VelValid: 1
+  beam4VelValid: 1
+  beam1DistValid: 1
+  beam2DistValid: 1
+  beam3DistValid: 1
+  beam4DistValid: 1
+  beam1FOMValid: 1
+  beam2FOMValid: 1
+  beam3FOMValid: 1
+  beam4FOMValid: 1
+  xVelValid: 1
+  yVelValid: 1
+  z1VelValid: 1
+  z2VelValid: 1
+  xFOMValid: 1
+  yFOMValid: 1
+  z1FOMValid: 1
+  z2FOMValid: 1
+  procIdle3: 0
+  procIdle6: 0
+  procIdle12: 0
+  empty: 0
+  wakeupstate: 2
+speed_sound: 1500.0
+temperature: -1.738494873046875
+pressure: 0.3928999900817871
+velBeam: [0.0016311333747580647, -0.008420856669545174, -0.005632749758660793, 0.0012740519596263766]
+distBeam: [2.2521297931671143, 1.9972357749938965, 1.84429931640625, 1.8952782154083252]
+fomBeam: [0.00468182610347867, 0.0013925161911174655, 0.0016987569397315383, 0.0011551668867468834]
+timeDiff1Beam: [0.012633833102881908, 0.012258833274245262, 0.012071333825588226, 0.01203383319079876]
+timeDiff2Beam: [-0.0705941691994667, -0.07096916437149048, -0.07115666568279266, -0.07119416445493698]
+timeVelEstBeam: [0.005876666400581598, 0.005426666233688593, 0.004976666532456875, 0.004976666532456875]
+velX: -0.0020255963318049908
+velY: 0.01413059514015913
+velZ1: -0.002209582133218646
+velZ2: -0.003946269862353802
+fomX: 0.004415246658027172
+fomY: 0.004415246192365885
+fomZ1: 0.0027500882279127836
+fomZ2: 0.0009990374092012644
+timeDiff1X: 0.01255883276462555
+timeDiff1Y: 0.01255883276462555
+timeDiff1Z1: 0.012577583082020283
+timeDiff1Z2: 0.012258833274245262
+timeDiff2X: -0.07066916674375534
+timeDiff2Y: -0.07066916674375534
+timeDiff2Z1: -0.07065041363239288
+timeDiff2Z2: -0.07096916437149048
+timeVelEstX: 0.006026666611433029
+timeVelEstY: 0.006026666611433029
+timeVelEstZ1: 0.00598916644230485
+timeVelEstZ2: 0.005426666233688593
+
+================================================================
+
+sync with rosbag t=1648667203614157209
+header: 
+  seq: 86
+  stamp: 
+    secs: 1648667201
+    nsecs: 921501637
+  frame_id: "nortek_dvl"
+ds_header: 
+  io_time: 
+    secs: 1648667202
+    nsecs: 760308412
+  source_uuid: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+dvl_type: 0
+good_beams: 4
+altitude_sum: 7.988943099975586
+dvl_time: 1648666281.0496 
+speed_gnd: 0.013431761413812637
+course_gnd: -18.921693548253835
+version: 1
+offsetOfData: 36
+serialNumber: 101811
+year: 122
+month: 2
+day: 30
+hour: 18
+minute: 51
+seconds: 21
+microSeconds: 496
+nBeams: 4
+error: 0
+status: 
+  beam1VelValid: 1
+  beam2VelValid: 1
+  beam3VelValid: 1
+  beam4VelValid: 1
+  beam1DistValid: 1
+  beam2DistValid: 1
+  beam3DistValid: 1
+  beam4DistValid: 1
+  beam1FOMValid: 1
+  beam2FOMValid: 1
+  beam3FOMValid: 1
+  beam4FOMValid: 1
+  xVelValid: 1
+  yVelValid: 1
+  z1VelValid: 1
+  z2VelValid: 1
+  xFOMValid: 1
+  yFOMValid: 1
+  z1FOMValid: 1
+  z2FOMValid: 1
+  procIdle3: 0
+  procIdle6: 0
+  procIdle12: 0
+  empty: 0
+  wakeupstate: 2
+speed_sound: 1500.0
+temperature: -1.746246337890625
+pressure: 0.39239999651908875
+velBeam: [-0.0019253805512562394, -0.00943506695330143, -0.0069362022913992405, 0.0008031165925785899]
+distBeam: [2.2521297931671143, 2.0482146739959717, 1.84429931640625, 1.84429931640625]
+fomBeam: [0.003950184211134911, 0.0028869742527604103, 0.002978320699185133, 0.00105813960544765]
+timeDiff1Beam: [0.012476334348320961, 0.01228883396834135, 0.012063833884894848, 0.01210133358836174]
+timeDiff2Beam: [-0.07090366631746292, -0.0710911676287651, -0.07131616771221161, -0.0712786614894867]
+timeVelEstBeam: [0.005126666277647018, 0.005426666233688593, 0.005126666277647018, 0.005126666277647018]
+velX: -0.004355592653155327
+velY: 0.01270594447851181
+velZ1: -0.004893121309578419
+velZ2: -0.004766326397657394
+fomX: 0.004853431135416031
+fomY: 0.004853430669754744
+fomZ1: 0.002731682499870658
+fomZ2: 0.0016978097846731544
+timeDiff1X: 0.012270083650946617
+timeDiff1Y: 0.012270083650946617
+timeDiff1Z1: 0.012270083650946617
+timeDiff1Z2: 0.012270083650946617
+timeDiff2X: -0.07110991328954697
+timeDiff2Y: -0.07110991328954697
+timeDiff2Z1: -0.07110991328954697
+timeDiff2Z2: -0.07110991328954697
+timeVelEstX: 0.0055391667410731316
+timeVelEstY: 0.0055391667410731316
+timeVelEstZ1: 0.0055391667410731316
+timeVelEstZ2: 0.005464165937155485
+
+==========================================
+first msg:
+  raw:  1648666281.5493, 1648667203.261069138
+  sync: 1648666281.0496, 1648667203.614157209
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+raw with rosbag t: 1648667203261069138
+header: 
+  seq: 98
+  stamp: 
+    secs: 1648667203
+    nsecs: 260168674
+  frame_id: "nortek_dvl"
+ds_header: 
+  io_time: 
+    secs: 1648667203
+    nsecs: 260168674
+  source_uuid: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+dvl_type: 0
+good_beams: 4
+altitude_sum: 7.988943099975586
+dvl_time: 1648666281.5493
+speed_gnd: 0.014275039546191692
+course_gnd: -8.157676562566103
+version: 1
+offsetOfData: 36
+serialNumber: 101811
+year: 122
+month: 2
+day: 30
+hour: 18
+minute: 51
+seconds: 21
+microSeconds: 5493
+nBeams: 4
+error: 0
+status: 
+  beam1VelValid: 1
+  beam2VelValid: 1
+  beam3VelValid: 1
+  beam4VelValid: 1
+  beam1DistValid: 1
+  beam2DistValid: 1
+  beam3DistValid: 1
+  beam4DistValid: 1
+  beam1FOMValid: 1
+  beam2FOMValid: 1
+  beam3FOMValid: 1
+  beam4FOMValid: 1
+  xVelValid: 1
+  yVelValid: 1
+  z1VelValid: 1
+  z2VelValid: 1
+  xFOMValid: 1
+  yFOMValid: 1
+  z1FOMValid: 1
+  z2FOMValid: 1
+  procIdle3: 0
+  procIdle6: 0
+  procIdle12: 0
+  empty: 0
+  wakeupstate: 2
+speed_sound: 1500.0
+temperature: -1.738494873046875
+pressure: 0.3928999900817871
+velBeam: [0.0016311333747580647, -0.008420856669545174, -0.005632749758660793, 0.0012740519596263766]
+distBeam: [2.2521297931671143, 1.9972357749938965, 1.84429931640625, 1.8952782154083252]
+fomBeam: [0.00468182610347867, 0.0013925161911174655, 0.0016987569397315383, 0.0011551668867468834]
+timeDiff1Beam: [0.012633833102881908, 0.012258833274245262, 0.012071333825588226, 0.01203383319079876]
+timeDiff2Beam: [-0.0705941691994667, -0.07096916437149048, -0.07115666568279266, -0.07119416445493698]
+timeVelEstBeam: [0.005876666400581598, 0.005426666233688593, 0.004976666532456875, 0.004976666532456875]
+velX: -0.0020255963318049908
+velY: 0.01413059514015913
+velZ1: -0.002209582133218646
+velZ2: -0.003946269862353802
+fomX: 0.004415246658027172
+fomY: 0.004415246192365885
+fomZ1: 0.0027500882279127836
+fomZ2: 0.0009990374092012644
+timeDiff1X: 0.01255883276462555
+timeDiff1Y: 0.01255883276462555
+timeDiff1Z1: 0.012577583082020283
+timeDiff1Z2: 0.012258833274245262
+timeDiff2X: -0.07066916674375534
+timeDiff2Y: -0.07066916674375534
+timeDiff2Z1: -0.07065041363239288
+timeDiff2Z2: -0.07096916437149048
+timeVelEstX: 0.006026666611433029
+timeVelEstY: 0.006026666611433029
+timeVelEstZ1: 0.00598916644230485
+timeVelEstZ2: 0.005426666233688593
+
+sync with rosbag t: 1648667203617810940
+header: 
+  seq: 90
+  stamp: 
+    secs: 1648667202
+    nsecs: 421571493
+  frame_id: "nortek_dvl"
+ds_header: 
+  io_time: 
+    secs: 1648667203
+    nsecs: 260168674
+  source_uuid: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+dvl_type: 0
+good_beams: 4
+altitude_sum: 7.988943099975586
+dvl_time: 1648666281.5493
+speed_gnd: 0.014275039546191692
+course_gnd: -8.157676562566103
+version: 1
+offsetOfData: 36
+serialNumber: 101811
+year: 122
+month: 2
+day: 30
+hour: 18
+minute: 51
+seconds: 21
+microSeconds: 5493
+nBeams: 4
+error: 0
+status: 
+  beam1VelValid: 1
+  beam2VelValid: 1
+  beam3VelValid: 1
+  beam4VelValid: 1
+  beam1DistValid: 1
+  beam2DistValid: 1
+  beam3DistValid: 1
+  beam4DistValid: 1
+  beam1FOMValid: 1
+  beam2FOMValid: 1
+  beam3FOMValid: 1
+  beam4FOMValid: 1
+  xVelValid: 1
+  yVelValid: 1
+  z1VelValid: 1
+  z2VelValid: 1
+  xFOMValid: 1
+  yFOMValid: 1
+  z1FOMValid: 1
+  z2FOMValid: 1
+  procIdle3: 0
+  procIdle6: 0
+  procIdle12: 0
+  empty: 0
+  wakeupstate: 2
+speed_sound: 1500.0
+temperature: -1.738494873046875
+pressure: 0.3928999900817871
+velBeam: [0.0016311333747580647, -0.008420856669545174, -0.005632749758660793, 0.0012740519596263766]
+distBeam: [2.2521297931671143, 1.9972357749938965, 1.84429931640625, 1.8952782154083252]
+fomBeam: [0.00468182610347867, 0.0013925161911174655, 0.0016987569397315383, 0.0011551668867468834]
+timeDiff1Beam: [0.012633833102881908, 0.012258833274245262, 0.012071333825588226, 0.01203383319079876]
+timeDiff2Beam: [-0.0705941691994667, -0.07096916437149048, -0.07115666568279266, -0.07119416445493698]
+timeVelEstBeam: [0.005876666400581598, 0.005426666233688593, 0.004976666532456875, 0.004976666532456875]
+velX: -0.0020255963318049908
+velY: 0.01413059514015913
+velZ1: -0.002209582133218646
+velZ2: -0.003946269862353802
+fomX: 0.004415246658027172
+fomY: 0.004415246192365885
+fomZ1: 0.0027500882279127836
+fomZ2: 0.0009990374092012644
+timeDiff1X: 0.01255883276462555
+timeDiff1Y: 0.01255883276462555
+timeDiff1Z1: 0.012577583082020283
+timeDiff1Z2: 0.012258833274245262
+timeDiff2X: -0.07066916674375534
+timeDiff2Y: -0.07066916674375534
+timeDiff2Z1: -0.07065041363239288
+timeDiff2Z2: -0.07096916437149048
+timeVelEstX: 0.006026666611433029
+timeVelEstY: 0.006026666611433029
+timeVelEstZ1: 0.00598916644230485
+timeVelEstZ2: 0.005426666233688593
+=====================================
+
+first raw with 
+  rosbag t: 1648667203.261069138
+  dvl_time: 1648666281.5493
+  io_time: 
+    secs: 1648667203
+    nsecs: 260168674
+
+sync associated with first raw system time 
+  rosbag t: 1648667203.617810940
+  dvl_time: 1648666281.5493
+  io_time: 
+    secs: 1648667203
+    nsecs: 260168674
