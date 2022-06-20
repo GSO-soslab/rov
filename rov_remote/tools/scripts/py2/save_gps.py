@@ -91,9 +91,13 @@ if __name__ == '__main__':
         logDataEnd(str(gpsd.fix.mode))
 
         print
-        print('--------------Saved--------------------------')
-        print('Computer time ', sys_time)
-        print("GPS time: ", gps_time_updated)
+        # print('--------------Saved--------------------------')
+        print('Computer', time.ctime(sys_time))
+        print("GPS", ascii_string)
+
+        # UNIX epoch time format
+        # print('Computer time ', sys_time)
+        # print("GPS time: ", gps_time_updated)
  
       time.sleep(0.1) #set to whatever
  

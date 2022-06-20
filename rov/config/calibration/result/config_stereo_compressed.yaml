@@ -1,3 +1,4 @@
+# collect sensor_msgs/CompressedImage then decompress to sensor_msgs/Image to do calibration
 cam0:
   cam_overlaps: [1]
   camera_model: pinhole
