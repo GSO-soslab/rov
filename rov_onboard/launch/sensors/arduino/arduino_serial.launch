@@ -7,4 +7,8 @@
         <param name="baud" value="250000"       type="int" />
     </node> 
 
+    <!-- reset arduino system -->
+    <node pkg="rostopic" type="rostopic" name="resetter" output="screen"
+          args="pub /rov/synchronizer/reset_system std_msgs/Bool -1 true" />
+          
 </launch>

@@ -9,10 +9,10 @@
     <include file="$(find rov_onboard)/launch/sensors/ahrs/microstrain_ahrs_sync.launch"/>
 
     <!-- DVL Ethernet -->
-    <include file="$(find rov_onboard)/launch/sensors/dvl/nortek_dvl_ethernet.launch"/>
+    <!-- <include file="$(find rov_onboard)/launch/sensors/dvl/nortek_ethernet_sync.launch"/> -->
     
     <!-- Sonar -->
-    <include file="$(find rov_onboard)/launch/sensors/sonar/oculus_sonar.launch"/> 
+    <!-- <include file="$(find rov_onboard)/launch/sensors/sonar/oculus_sonar.launch"/>  -->
 
 
 </launch>

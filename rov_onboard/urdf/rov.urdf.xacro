@@ -48,7 +48,7 @@
   <joint name="base_to_sonar" type="fixed">
     <parent link="base_link"/>
     <child link="sonar"/>
-    <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
+    <origin xyz="0.7086 -0.1778 0.2387" rpy="0 -0.2617 0"/>
   </joint>
 
 </robot>
