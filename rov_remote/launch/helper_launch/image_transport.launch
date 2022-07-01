@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+
+<launch>
+<!-- <param name="use_sim_time" value="true" /> -->
+
+<node name="right_republish" type="republish" pkg="image_transport" output="screen"
+      args="raw         in:=/rov/sensors/stereo/right/image_numbered/image_raw_sync 
+            compressed  out:=/rov_remote/sensors/stereo/right/image_raw_sync" />
+
+<node name="left_republish" type="republish" pkg="image_transport" output="screen"
+      args="raw         in:=/rov/sensors/stereo/left/image_numbered/image_raw_sync
+            compressed  out:=/rov_remote/sensors/stereo/left/image_raw_sync" />
+
+</launch>
+
