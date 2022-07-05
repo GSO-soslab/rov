@@ -10,7 +10,7 @@
 #
 # Usage    : 
 # python3 /home/lin/develop/ros/soslab_ws/src/rov/rov_remote/tools/scripts/py3/restamp_bag.py \
-#  -i merged.bag -o restamped.bag
+#  -i input.bag -o restamped.bag
 # ------------------------------------------------------------------------------
 
 import roslib

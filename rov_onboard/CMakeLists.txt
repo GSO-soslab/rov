@@ -15,8 +15,9 @@ catkin_package(
 )
 
 # build urdf
-find_package(xacro REQUIRED)
-xacro_add_files(${CMAKE_CURRENT_SOURCE_DIR}/urdf/rov.urdf.xacro TARGET rov INORDER)
-install(FILES
-    urdf/rov.urdf
-    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
+# find_package(xacro REQUIRED)
+# xacro_add_files(${CMAKE_CURRENT_SOURCE_DIR}/urdf/rov.urdf.xacro TARGET rov INORDER)
+
+# install(FILES
+#     urdf/rov.urdf
+#     DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
