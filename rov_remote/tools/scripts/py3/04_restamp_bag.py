@@ -9,7 +9,7 @@
 # Status   : under review
 #
 # Usage    : 
-# python3 /home/lin/develop/ros/soslab_ws/src/rov/rov_remote/tools/scripts/py3/restamp_bag.py \
+# python3 /home/lin/develop/ros/soslab_ws/src/rov/rov_remote/tools/scripts/py3/04_restamp_bag.py \
 #  -i input.bag -o restamped.bag
 # ------------------------------------------------------------------------------
 

@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 import pickle
 
 # example:
-# python3 /home/lin/develop/ros/soslab_ws/src/rov/rov_remote/tools/scripts/py3/recovery_sync_dvl.py \
+# python3 /home/lin/develop/ros/soslab_ws/src/rov/rov_remote/tools/scripts/py3/02_recovery_sync_dvl.py \
 # raw_total.bag out_test.bag \
 # /rov/sensors/dvl/df21 /rov/sensors/dvl/df21/df21_sync \
 # /rov/sensors/dvl/df3 /rov/sensors/dvl/df3/df3_sync  -v
@@ -60,8 +60,9 @@ def main():
 
     #------------------------------------------ BT Align  ----------------------------------------------------#
 
+    #### select raw or sync, which one assign as the first: the larger timestamp
     first_bt_raw_sys_t = 0
-    first_bt_trigger_t = 0
+    first_bt_sync_sys_t = 0
     # find first raw DVL BT data
     for topic, msg, t in input_bag.read_messages(args.topic_bt_raw):
         first_bt_raw_sys_t = msg.dvl_time
@@ -69,13 +70,49 @@ def main():
         break
     # find first sync DVL BT data
     for topic, msg, t in input_bag.read_messages(args.topic_bt_sync):
-      if first_bt_raw_sys_t == msg.dvl_time:
-        # restore to original trigger time
-        time_transmit = (msg.timeDiff1Beam[0] + msg.timeDiff1Beam[1] +
-                         msg.timeDiff1Beam[2] + msg.timeDiff1Beam[3]) / 4;
-        first_bt_trigger_t = msg.header.stamp.to_sec() - 0.0084 - time_transmit
-        print('firsy sync BT sync time:%f with system time:%f' %(first_bt_trigger_t, msg.dvl_time))
-        break
+      first_bt_sync_sys_t = msg.dvl_time
+      print('first sync BT system time:' , first_bt_sync_sys_t)
+      break   
+
+
+    first_bt_trigger_t = 0
+    first_bt_raw_t = 0
+
+    ### select based on raw
+    if first_bt_raw_sys_t > first_bt_sync_sys_t:
+      ### find first raw time
+      first_bt_raw_t = first_bt_raw_sys_t
+
+      ### find first trigger time
+      for topic, msg, t in input_bag.read_messages(args.topic_bt_sync):
+        if first_bt_raw_sys_t == msg.dvl_time:
+          # restore to original trigger time
+          time_transmit = (msg.timeDiff1Beam[0] + msg.timeDiff1Beam[1] +
+                          msg.timeDiff1Beam[2] + msg.timeDiff1Beam[3]) / 4;
+          first_bt_trigger_t = msg.header.stamp.to_sec() - 0.0084 - time_transmit
+          print('align sync BT 1 sync time:%f with system time:%f' %(first_bt_trigger_t, msg.dvl_time))
+          break
+        else:
+          print('something wrong1!')
+    ### selec based on sync
+    else :
+      ### find first raw time
+      for topic, msg, t in input_bag.read_messages(args.topic_bt_raw):
+        if first_bt_sync_sys_t == msg.dvl_time:
+          first_bt_raw_t = msg.dvl_time
+          break
+
+      ### find first trigger time
+      for topic, msg, t in input_bag.read_messages(args.topic_bt_sync):
+        if first_bt_sync_sys_t == msg.dvl_time:
+          # restore to original trigger time
+          time_transmit = (msg.timeDiff1Beam[0] + msg.timeDiff1Beam[1] +
+                          msg.timeDiff1Beam[2] + msg.timeDiff1Beam[3]) / 4;
+          first_bt_trigger_t = msg.header.stamp.to_sec() - 0.0084 - time_transmit
+          print('align sync BT 2 sync time:%f with system time:%f' %(first_bt_trigger_t, msg.dvl_time))
+          break
+        else:
+          print('something wrong3!')
 
     print('Finish aligning raw data and sync data for BT !!')
 
@@ -102,9 +139,12 @@ def main():
     bt_dvl_sync = []
     last_sys_t = 0
     trigger_delay = 0.0084
-    drift = 0.000013333
+    drift = 0.000013333 # arduino drift
 
     for topic, msg, t in input_bag.read_messages(args.topic_bt_raw):
+      # only start at the align point
+      if first_bt_raw_t > msg.dvl_time:
+        continue
 
       # actual sync time should be: sync time = trigger time + trigger delay + half transmit time
 
@@ -183,8 +223,20 @@ def main():
         correct_trigger_t = first_cp_trigger_t
       else:
         # find how many trigger missed, apply the arduino trigger time
-        delta_sync_time = round( (msg.dvl_time - last_sys_t) / 1.0) * (1.0+8*drift)
+
+        ### special case: DVL terigger time not trigger at 1 constant second, but 0.875
+        if msg.header.seq == 892:
+          delta_sync_time = round( (msg.dvl_time - last_sys_t) / 1.0) * (0.875+8*drift)
+        else:
+          delta_sync_time = round( (msg.dvl_time - last_sys_t) / 1.0) * (1.0+8*drift)
+
+        ### Normal case: trigger every 1 second, 
+        # delta_sync_time = round( (msg.dvl_time - last_sys_t) / 1.0) * (1.0+8*drift)
+
         correct_trigger_t += delta_sync_time
+        # if msg.header.seq > 890 and msg.header.seq < 895:
+        #   test = (msg.dvl_time - last_sys_t) 
+        #   print(test)
 
       # get correct BT time
       time = correct_trigger_t + trigger_delay
@@ -226,6 +278,7 @@ def main():
     plt.xlabel('data seq')
     plt.ylabel('system time difference (s)')
     plt.title('DVL BT system time offset on raw data')
+    plt.grid(True)
 
     fig_2 = plt.figure(2)
     ax_2 = plt.subplot(1, 1, 1)
@@ -233,13 +286,15 @@ def main():
     plt.xlabel('data seq')
     plt.ylabel('sync time difference (s)')
     plt.title('DVL BT system time offset on sync data')
+    plt.grid(True)
 
     fig_3 = plt.figure(3)
     ax_3 = plt.subplot(1, 1, 1)
     ax_3.scatter(cp_seq, cp_delta_raw_sys_t)
     plt.xlabel('data seq')
     plt.ylabel('system time difference (s)')
-    plt.title('DVL CP system time offset on sync data')
+    plt.title('DVL CP system time offset on raw data')
+    plt.grid(True)
 
     fig_4 = plt.figure(4)
     ax_4 = plt.subplot(1, 1, 1)
@@ -247,6 +302,7 @@ def main():
     plt.xlabel('data seq')
     plt.ylabel('sync time difference (s)')
     plt.title('DVL CP system time offset on sync data')
+    plt.grid(True)
 
     # # TEST:
     # fig_5 = plt.figure(5)
@@ -256,7 +312,6 @@ def main():
     # plt.ylabel('time difference (s)')
     # plt.title('recovery BT sync time - original sync time')
 
-    plt.grid(True)
     plt.show()
 
 if __name__ == "__main__":

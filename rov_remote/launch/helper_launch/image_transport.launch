@@ -1,7 +1,16 @@
 <?xml version="1.0" ?>
 
 <launch>
-<!-- <param name="use_sim_time" value="true" /> -->
+
+<arg name="offline" default="true"/>
+
+<!-- Start ROS Bag -->
+<param name="use_sim_time" value="$(arg offline )" />
+<arg name="bag" default="/home/lin/develop/data/underIce/alaska/03_28/merged.bag" />
+<arg name="bag_start"  default="0" /> 
+<node if="$(arg offline )" pkg="rosbag" type="play" name="rosbag" output="screen" required="true"
+      args="--clock --pause -d 1 -s $(arg bag_start) $(arg bag)"> 
+</node>
 
 <node name="right_republish" type="republish" pkg="image_transport" output="screen"
       args="raw         in:=/rov/sensors/stereo/right/image_numbered/image_raw_sync 
@@ -12,4 +21,5 @@
             compressed  out:=/rov_remote/sensors/stereo/left/image_raw_sync" />
 
 </launch>
+
 

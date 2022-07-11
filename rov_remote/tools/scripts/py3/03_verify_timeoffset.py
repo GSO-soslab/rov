@@ -57,7 +57,7 @@ or so.
 
 #########################################################################################################3
 # Example:
-# python3 /home/lin/develop/ros/soslab_ws/src/rov/rov_remote/tools/scripts/py3/verify_timeoffset.py \
+# python3 /home/lin/develop/ros/soslab_ws/src/rov/rov_remote/tools/scripts/py3/03_verify_timeoffset.py \
 # dvl_sync.bag /rov/sensors/dvl/df21/df21_sync
 #########################################################################################################3
 
@@ -221,7 +221,8 @@ def printMsgsInBagFile(args):
         ### DVL IO time
         io_time = msg.ds_header.io_time.to_sec()
         sync_time = msg.header.stamp.to_sec()
-
+        # print("io_time: %d; sync_time %d." % (io_time,sync_time))
+        
         # test = msg.header.seq
         # test_system_t = msg.dvl_time
 

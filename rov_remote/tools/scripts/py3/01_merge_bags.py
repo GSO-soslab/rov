@@ -11,8 +11,8 @@ from fnmatch import fnmatchcase
 from rosbag import Bag
 
 # Usage:
-# python3 /home/lin/develop/ros/soslab_ws/src/rov/rov_remote/tools/scripts/py3/merge_bags.py \
-# merged.bag raw_total_noDVL.bag dvl_sync.bag -v
+# python3 /home/lin/develop/ros/soslab_ws/src/rov/rov_remote/tools/scripts/py3/01_merge_bags.py \
+# merged.bag input_1.bag input_2.bag -v
 
 def main():
 

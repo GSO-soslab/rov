@@ -225,6 +225,7 @@ void ProcessDvl::process()
       // filter for inf. data and do kalman filter
       if (abs(v_x)>5 || abs(v_y)>5 || abs(v_z)>5) {
         twist_kf_.update(y_twist); // use previous one
+        ROS_WARN("Bad DVL velocity:x=%f,y=%f,z=%f", v_x,v_y,v_z);
       }
       else {
         y_twist << v_x, v_y, v_z;
