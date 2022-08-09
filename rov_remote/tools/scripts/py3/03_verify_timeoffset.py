@@ -219,16 +219,16 @@ def printMsgsInBagFile(args):
         # sync_time = msg.header.stamp.to_sec()
 
         ### DVL IO time
-        io_time = msg.ds_header.io_time.to_sec()
-        sync_time = msg.header.stamp.to_sec()
+        # io_time = msg.ds_header.io_time.to_sec()
+        # sync_time = msg.header.stamp.to_sec()
         # print("io_time: %d; sync_time %d." % (io_time,sync_time))
         
         # test = msg.header.seq
         # test_system_t = msg.dvl_time
 
         ### AHRS IO time
-        # io_time = msg.time_ref.to_sec()
-        # sync_time = msg.header.stamp.to_sec()
+        io_time = msg.time_ref.to_sec()
+        sync_time = msg.header.stamp.to_sec()
         
         ### Arduino time
         # io_time = msg.time.to_sec()
