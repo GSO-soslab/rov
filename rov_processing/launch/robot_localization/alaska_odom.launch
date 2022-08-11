@@ -8,8 +8,8 @@
     <param name="pub_pointcloud" value="true"/>
     <node  name="proc_dvl_node" pkg="rov_processing" type="proc_dvl_ethernet"  output="screen">
         <!-- sub -->
-        <remap from="/dvl"         to="/rov/sensors/dvl/df21"/>
-        <!-- <remap from="/dvl"         to="/rov/sensors/dvl/df21/df21_sync"/> -->
+        <!-- <remap from="/dvl"         to="/rov/sensors/dvl/df21"/> -->
+        <remap from="/dvl"         to="/rov/sensors/dvl/df21/df21_sync"/>
         <!-- pub -->
         <remap from="/pointcloud"  to="/rov/processed/dvl/pointcloud"/>
         <remap from="/depth"       to="/rov/processed/dvl/depth_filtered"/>

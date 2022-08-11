@@ -2,6 +2,8 @@
 
 import csv
 import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
 
 ###################################################################################################
 ####                              Separate data into ahrs and usbl                             ####
@@ -68,26 +70,151 @@ df = pd.read_csv(
 name     =  list(df["1_Name"])
 t        =  list(df["2_Computer_Timestamp"])
 accuracy =  list(df["10_Accuracy"])
+rssi =  list(df["6_RSSI"])
+integrity =  list(df["7_INTEGRITY"])
 raw_X =  list(df["11_Raw_X"])
 raw_Y =  list(df["12_Raw_Y"])
 raw_Z =  list(df["13_Raw_Z"])
-raw_E =  list(df["14_Raw_E"])
-raw_N =  list(df["15_Raw_N"])
-raw_U =  list(df["16_Raw_U"])
-X_CRP =  list(df["17_X_CRP"])
-Y_CRP =  list(df["18_Y_CRP"])
-Z_CRP =  list(df["19_Z_CRP"])
-N_CRP =  list(df["20_N_CRP"])
-E_CRP =  list(df["21_E_CRP"])
-D_CRP =  list(df["22_D_CRP"])         
+# raw_E =  list(df["14_Raw_E"])
+# raw_N =  list(df["15_Raw_N"])
+# raw_U =  list(df["16_Raw_U"])
+# X_CRP =  list(df["17_X_CRP"])
+# Y_CRP =  list(df["18_Y_CRP"])
+# Z_CRP =  list(df["19_Z_CRP"])
+# N_CRP =  list(df["20_N_CRP"])
+# E_CRP =  list(df["21_E_CRP"])
+# D_CRP =  list(df["22_D_CRP"])         
 
-# count = 0
-# for i in range(len(name)):
-#   print(name[i])
-#   count +=1
-# print("")
-# print('name total: %s' % count)
+# check data size
+if len(accuracy) != len(raw_X) != len(raw_Y) != len(raw_Z) != len(rssi) != len(integrity) != len(t):
+    print('data size not right !')
+
+# generate time step
+time_step = [] 
+for i in range(len(t)):
+    time_step.append(i)
+
+print(' ')
+print('finsih parse ahrs and usbl !!!')
 
 ###################################################################################################
 ####                                       Plot usbl data                                      ####
 ###################################################################################################
+
+### plot accuracy:
+# fig_1 = plt.figure(1)
+# plt.plot(x_axis, accuracy)
+# plt.tight_layout()
+
+### Create cubic bounding box to simulate equal aspect ratio
+### from: https://stackoverflow.com/questions/13685386/matplotlib-equal-unit-length-with-equal-aspect-ratio-z-axis-is-not-equal-to
+
+max_range = np.array([max(raw_X)-min(raw_X), max(raw_Y)-min(raw_Y), max(raw_Z)-min(raw_Z)]).max() /2.0
+mid_x = (max(raw_X) + min(raw_X)) * 0.5
+mid_y = (max(raw_Y) + min(raw_Y)) * 0.5
+mid_z = (max(raw_Z) + min(raw_Z)) * 0.5
+
+########################### plot XYZ with ########################### 
+
+# filtering
+fliter_x = []
+fliter_y = []
+fliter_z = []
+fliter_rule = []
+for i in range(len(raw_X)):
+    if accuracy[i] < 1:
+        fliter_rule.append(accuracy[i])
+        fliter_x.append(raw_X[i])
+        fliter_y.append(raw_Y[i])
+        fliter_z.append(raw_Z[i])
+# plot
+fig = plt.figure(1)
+ax = fig.add_subplot(111, projection='3d')
+traj= ax.scatter(fliter_x, fliter_y, fliter_z, c=fliter_rule, s=2, cmap='jet')
+height_bar = fig.colorbar(traj, pad=0.2)
+height_bar.set_label("Accuracy [m]", fontsize=12)
+ax.locator_params(nbins=6)
+ax.set_xlabel('X [m]', fontsize=11)
+ax.set_ylabel('Y [m]', fontsize=11)
+ax.set_zlabel('Z [m]', fontsize=11)
+ax.set_xlim(mid_x - max_range, mid_x + max_range)
+ax.set_ylim(mid_y - max_range, mid_y + max_range)
+ax.set_zlim(mid_z - max_range, mid_z + max_range)
+plt.tight_layout()
+plt.title("USBL RAW XYZ plot with Accuracy")
+
+###########################    plot XYZ with RSSI    ###########################
+
+# filtering
+fliter_x = []
+fliter_y = []
+fliter_z = []
+fliter_rule = []
+for i in range(len(raw_X)):
+    if rssi[i] > -30:
+        fliter_rule.append(rssi[i])
+        fliter_x.append(raw_X[i])
+        fliter_y.append(raw_Y[i])
+        fliter_z.append(raw_Z[i])
+# plot
+fig = plt.figure(2)
+ax = fig.add_subplot(111, projection='3d')
+traj = ax.scatter(fliter_x, fliter_y, fliter_z, c=fliter_rule, s=2, cmap='jet')
+height_bar = fig.colorbar(traj, pad=0.2)
+height_bar.set_label("RSSI [dB re 1V]", fontsize=12)
+ax.locator_params(nbins=6)
+ax.set_xlabel('X [m]', fontsize=11)
+ax.set_ylabel('Y [m]', fontsize=11)
+ax.set_zlabel('Z [m]', fontsize=11)
+ax.set_xlim(mid_x - max_range, mid_x + max_range)
+ax.set_ylim(mid_y - max_range, mid_y + max_range)
+ax.set_zlim(mid_z - max_range, mid_z + max_range)
+plt.tight_layout()
+plt.title("USBL RAW XYZ plot with RSSI")
+
+###########################          plot XYZ with integrity    ###########################
+# filtering
+fliter_x = []
+fliter_y = []
+fliter_z = []
+fliter_rule = []
+for i in range(len(raw_X)):
+    if integrity[i] <200:
+        fliter_rule.append(integrity[i])
+        fliter_x.append(raw_X[i])
+        fliter_y.append(raw_Y[i])
+        fliter_z.append(raw_Z[i])
+# plot
+fig = plt.figure(3)
+ax = fig.add_subplot(111, projection='3d')
+traj = ax.scatter(fliter_x, fliter_y, fliter_z, c=fliter_rule, s=2, cmap='jet')
+height_bar = fig.colorbar(traj, pad=0.2)
+height_bar.set_label("INTEGRAITY [integer]", fontsize=12)
+ax.locator_params(nbins=6)
+ax.set_xlabel('X [m]', fontsize=11)
+ax.set_ylabel('Y [m]', fontsize=11)
+ax.set_zlabel('Z [m]', fontsize=11)
+ax.set_xlim(mid_x - max_range, mid_x + max_range)
+ax.set_ylim(mid_y - max_range, mid_y + max_range)
+ax.set_zlim(mid_z - max_range, mid_z + max_range)
+plt.tight_layout()
+plt.title("USBL RAW XYZ plot with INTEGRAITY")
+
+###########################           plot XYZ with time      ###########################
+fig = plt.figure(4)
+ax = fig.add_subplot(111, projection='3d')
+traj = ax.scatter(raw_X, raw_Y, raw_Z, c=time_step, s=2, cmap='jet')
+height_bar = fig.colorbar(traj, pad=0.2)
+height_bar.set_label("time_step [scalar]", fontsize=12)
+
+ax.locator_params(nbins=6)
+ax.set_xlabel('X [m]', fontsize=11)
+ax.set_ylabel('Y [m]', fontsize=11)
+ax.set_zlabel('Z [m]', fontsize=11)
+ax.set_xlim(mid_x - max_range, mid_x + max_range)
+ax.set_ylim(mid_y - max_range, mid_y + max_range)
+ax.set_zlim(mid_z - max_range, mid_z + max_range)
+plt.tight_layout()
+plt.title("USBL RAW XYZ plot with time step")
+
+plt.show()
