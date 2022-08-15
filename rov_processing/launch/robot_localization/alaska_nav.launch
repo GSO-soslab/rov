@@ -6,13 +6,26 @@
 
     <!-- Start ROS Bag -->
     <param name="use_sim_time" value="$(arg offline )" />
+
+    <!-- <arg name="bag" default="/home/lin/develop/data/underIce/alaska/03_23/test1_imageCompressed_timeRestamped_timeSync.bag" />
+    <arg name="bag_start"  default="0" /> 
+    <arg name="bag_duration"  default="610" />  -->
+
+    <!-- <arg name="bag" default="/home/lin/develop/data/underIce/alaska/03_23/test2_imageCompressed_timeRestamped_timeSync.bag" />
+    <arg name="bag_start"  default="0" /> 
+    <arg name="bag_duration"  default="424" />  -->
+
     <!-- <arg name="bag" default="/home/lin/develop/data/underIce/alaska/03_28/full_imgCompressed_timeSync.bag" /> -->
     <!-- <arg name="bag" default="/home/lin/develop/data/underIce/alaska/03_28/full_imgCompressed_timeIO.bag" />
     <arg name="bag_start"  default="0" />  -->
 
-    <arg name="bag" default="/home/lin/develop/data/underIce/alaska/03_30/full_dvlCorrect_timeRestamp_imgCompressed_timeSync.bag" />
+    <arg name="bag" default="/home/lin/develop/data/underIce/alaska/03_29/full_imgCompressed_dvlRecoveried_timeRestamped_timeSync.bag" />
     <arg name="bag_start"  default="0" /> 
-    <arg name="bag_duration"  default="1100" /> 
+    <arg name="bag_duration"  default="1599" /> 
+    
+    <!-- <arg name="bag" default="/home/lin/develop/data/underIce/alaska/03_30/full_dvlCorrect_timeRestamp_imgCompressed_timeSync.bag" />
+    <arg name="bag_start"  default="0" /> 
+    <arg name="bag_duration"  default="1100" />  -->
 
     <node if="$(arg offline )" pkg="rosbag" type="play" name="rosbag" output="screen" required="true"
           args="--clock --pause -d 1 -s $(arg bag_start) -u $(arg bag_duration) $(arg bag)"> 

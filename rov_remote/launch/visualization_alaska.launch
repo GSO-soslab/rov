@@ -25,8 +25,8 @@
   </node> -->
 
 <!-- visualization -->
-  <node name = "rqt_node" pkg = "rqt_gui" type = "rqt_gui" respawn = "false" output = "screen" 
-        args = "--perspective-file $(find rov_remote)/launch/visualization_config/alaska.perspective"/>
+  <!-- <node name = "rqt_node" pkg = "rqt_gui" type = "rqt_gui" respawn = "false" output = "screen" 
+        args = "-1-perspective-file $(find rov_remote)/launch/visualization_config/alaska.perspective"/> -->
 
   <!-- <node name="path_node" pkg="rov_remote" type="path_node" output="screen" >
       <remap from="odometry" to="/rov/processed/ekf_odometry"/>

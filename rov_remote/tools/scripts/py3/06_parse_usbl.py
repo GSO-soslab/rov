@@ -10,10 +10,13 @@ import numpy as np
 ###################################################################################################
 
 #### Create separated data filename
-# data_filename = '/home/lin/Desktop/2022-03-30-usbl-01.csv'
-data_filename = '/home/lin/develop/data/underIce/alaska/03_30/2022-03-30-usbl-01.csv'
-index = data_filename.find('.csv')
+
+# data_filename = '/home/lin/develop/data/underIce/alaska/03_23/2022-03-24-data-01.csv'
+# data_filename = '/home/lin/develop/data/underIce/alaska/03_29/2022-03-29-data-01.csv'
+data_filename = '/home/lin/develop/data/underIce/alaska/03_30/2022-03-30-data-01.csv'
+
 # generate new filename for separated data
+index = data_filename.find('.csv')
 ahrs_filename = data_filename[:index] + '_ahrs' + data_filename[index:] 
 usbl_filename = data_filename[:index] + '_usbl' + data_filename[index:] 
 
@@ -48,6 +51,7 @@ print('finsih separate ahrs and usbl !!!')
 ####                                        Parse usbl data                                    ####
 ###################################################################################################
 
+
 #### Get entire USBL data
 df = pd.read_csv(
   usbl_filename, sep=",", header=None, 
@@ -67,14 +71,14 @@ df = pd.read_csv(
          "46_Unkown_1", "47_Unkown_2", "48_Unkown_3", "49_Unkown_4"])
 
 #### get each value
-name     =  list(df["1_Name"])
-t        =  list(df["2_Computer_Timestamp"])
-accuracy =  list(df["10_Accuracy"])
-rssi =  list(df["6_RSSI"])
+name      =  list(df["1_Name"])
+t         =  list(df["2_Computer_Timestamp"])
+accuracy  =  list(df["10_Accuracy"])
+rssi      =  list(df["6_RSSI"])
 integrity =  list(df["7_INTEGRITY"])
-raw_X =  list(df["11_Raw_X"])
-raw_Y =  list(df["12_Raw_Y"])
-raw_Z =  list(df["13_Raw_Z"])
+raw_X     =  list(df["11_Raw_X"])
+raw_Y     =  list(df["12_Raw_Y"])
+raw_Z     =  list(df["13_Raw_Z"])
 # raw_E =  list(df["14_Raw_E"])
 # raw_N =  list(df["15_Raw_N"])
 # raw_U =  list(df["16_Raw_U"])
@@ -114,7 +118,22 @@ mid_x = (max(raw_X) + min(raw_X)) * 0.5
 mid_y = (max(raw_Y) + min(raw_Y)) * 0.5
 mid_z = (max(raw_Z) + min(raw_Z)) * 0.5
 
-########################### plot XYZ with ########################### 
+###########################         plot XYZ        ########################### 
+# plot
+fig = plt.figure(1)
+ax = fig.add_subplot(111, projection='3d')
+traj= ax.scatter(raw_X, raw_Y, raw_Z,)
+ax.locator_params(nbins=6)
+ax.set_xlabel('X [m]', fontsize=11)
+ax.set_ylabel('Y [m]', fontsize=11)
+ax.set_zlabel('Z [m]', fontsize=11)
+ax.set_xlim(mid_x - max_range, mid_x + max_range)
+ax.set_ylim(mid_y - max_range, mid_y + max_range)
+ax.set_zlim(mid_z - max_range, mid_z + max_range)
+plt.tight_layout()
+plt.title("USBL RAW XYZ plot")
+
+########################### plot XYZ with accuracy ########################### 
 
 # filtering
 fliter_x = []
@@ -122,15 +141,15 @@ fliter_y = []
 fliter_z = []
 fliter_rule = []
 for i in range(len(raw_X)):
-    if accuracy[i] < 1:
+    if accuracy[i] < 10:
         fliter_rule.append(accuracy[i])
         fliter_x.append(raw_X[i])
         fliter_y.append(raw_Y[i])
         fliter_z.append(raw_Z[i])
 # plot
-fig = plt.figure(1)
+fig = plt.figure(2)
 ax = fig.add_subplot(111, projection='3d')
-traj= ax.scatter(fliter_x, fliter_y, fliter_z, c=fliter_rule, s=2, cmap='jet')
+traj= ax.scatter(fliter_x, fliter_y, fliter_z, c=fliter_rule, s=5, cmap='jet')
 height_bar = fig.colorbar(traj, pad=0.2)
 height_bar.set_label("Accuracy [m]", fontsize=12)
 ax.locator_params(nbins=6)
@@ -151,15 +170,15 @@ fliter_y = []
 fliter_z = []
 fliter_rule = []
 for i in range(len(raw_X)):
-    if rssi[i] > -30:
+    if rssi[i] > -100:
         fliter_rule.append(rssi[i])
         fliter_x.append(raw_X[i])
         fliter_y.append(raw_Y[i])
         fliter_z.append(raw_Z[i])
 # plot
-fig = plt.figure(2)
+fig = plt.figure(3)
 ax = fig.add_subplot(111, projection='3d')
-traj = ax.scatter(fliter_x, fliter_y, fliter_z, c=fliter_rule, s=2, cmap='jet')
+traj = ax.scatter(fliter_x, fliter_y, fliter_z, c=fliter_rule, s=5, cmap='jet')
 height_bar = fig.colorbar(traj, pad=0.2)
 height_bar.set_label("RSSI [dB re 1V]", fontsize=12)
 ax.locator_params(nbins=6)
@@ -179,15 +198,15 @@ fliter_y = []
 fliter_z = []
 fliter_rule = []
 for i in range(len(raw_X)):
-    if integrity[i] <200:
+    if integrity[i] < 500:
         fliter_rule.append(integrity[i])
         fliter_x.append(raw_X[i])
         fliter_y.append(raw_Y[i])
         fliter_z.append(raw_Z[i])
 # plot
-fig = plt.figure(3)
+fig = plt.figure(4)
 ax = fig.add_subplot(111, projection='3d')
-traj = ax.scatter(fliter_x, fliter_y, fliter_z, c=fliter_rule, s=2, cmap='jet')
+traj = ax.scatter(fliter_x, fliter_y, fliter_z, c=fliter_rule, s=5, cmap='jet')
 height_bar = fig.colorbar(traj, pad=0.2)
 height_bar.set_label("INTEGRAITY [integer]", fontsize=12)
 ax.locator_params(nbins=6)
@@ -201,9 +220,9 @@ plt.tight_layout()
 plt.title("USBL RAW XYZ plot with INTEGRAITY")
 
 ###########################           plot XYZ with time      ###########################
-fig = plt.figure(4)
+fig = plt.figure(5)
 ax = fig.add_subplot(111, projection='3d')
-traj = ax.scatter(raw_X, raw_Y, raw_Z, c=time_step, s=2, cmap='jet')
+traj = ax.scatter(raw_X, raw_Y, raw_Z, c=time_step, s=5, cmap='jet')
 height_bar = fig.colorbar(traj, pad=0.2)
 height_bar.set_label("time_step [scalar]", fontsize=12)
 
