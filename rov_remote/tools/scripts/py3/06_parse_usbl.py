@@ -12,8 +12,8 @@ import numpy as np
 #### Create separated data filename
 
 # data_filename = '/home/lin/develop/data/underIce/alaska/03_23/2022-03-24-data-01.csv'
-# data_filename = '/home/lin/develop/data/underIce/alaska/03_29/2022-03-29-data-01.csv'
-data_filename = '/home/lin/develop/data/underIce/alaska/03_30/2022-03-30-data-01.csv'
+data_filename = '/home/lin/develop/data/underIce/alaska/03_29/2022-03-29-data-01.csv'
+# data_filename = '/home/lin/develop/data/underIce/alaska/03_30/2022-03-30-data-01.csv'
 
 # generate new filename for separated data
 index = data_filename.find('.csv')
