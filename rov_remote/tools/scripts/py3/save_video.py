@@ -5,7 +5,7 @@
 #
 # Usage    : 
 # python3 /home/lin/develop/ros/soslab_ws/src/rov/rov_remote/tools/scripts/py3/save_video.py \
-# 40m_servo60_noLED_noAR_HighFeq10m.bag \
+# 40m_servo60_noLED_noAR_HighFeq10m_2.bag \
 # /rov/sensors/stereo/left/image_raw/compressed left.avi \
 # /rov/sensors/stereo/right/image_raw/compressed right.avi \
 # -v
