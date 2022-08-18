@@ -1,7 +1,8 @@
 # !/usr/bin/env python
 
 # ------------------------------------------------------------------------------
-# Function : save the image(compressed or raw) into video from rosbag
+# Function : save the image(compressed or raw) into video from rosbag, 
+#            the saving process will be present to 1-10 as progress rate.
 #
 # Usage    : 
 # python3 /home/lin/develop/ros/soslab_ws/src/rov/rov_remote/tools/scripts/py3/save_video.py \
@@ -109,7 +110,7 @@ class SaveVideo:
         # release saver
         saver.release()
 
-        print('video saved!')
+        print('->video saved!')
 
     def get_img_info(self):
         for topic, msg, t in rosbag.Bag(self.input_bag).read_messages(self.left_topic):
