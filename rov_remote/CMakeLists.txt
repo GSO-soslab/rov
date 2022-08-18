@@ -14,7 +14,7 @@ find_package(Eigen3 REQUIRED)
 find_package(yaml-cpp REQUIRED)
 find_package(catkin REQUIRED COMPONENTS
   roscpp rospy nav_msgs geometry_msgs
-  tf sensor_msgs tf_conversions 
+  tf sensor_msgs tf_conversions nortek_dvl
   # cv_bridge
   )
 
@@ -22,7 +22,7 @@ catkin_package(
   INCLUDE_DIRS 
   CATKIN_DEPENDS
     roscpp rospy nav_msgs geometry_msgs
-    tf sensor_msgs tf_conversions 
+    tf sensor_msgs tf_conversions nortek_dvl
     # cv_bridge
 )
 include_directories(
@@ -32,6 +32,11 @@ include_directories(
 )
 
 # message(STATUS "    testestestestest: $${PROJECT_SOURCE_DIR}")
+
+list(APPEND thirdparty_libraries
+  ${catkin_LIBRARIES}
+  # ${OpenCV_LIBRARIES}
+)
 
 
 find_package(xacro REQUIRED)
@@ -50,13 +55,18 @@ install(FILES
 # add_executable( tools_calibCam_node tools/cpp/calibrate_camera.cpp )
 # target_link_libraries( tools_calibCam_node ${OpenCV_LIBS} )
 
+add_executable(tools_remap_dvl tools/cpp/remap_dvl.cpp)
+target_link_libraries(tools_remap_dvl
+  ${thirdparty_libraries}
+)
+
 # test
 add_executable(path_node test/path_pub.cpp)
 target_link_libraries(path_node
-  ${catkin_LIBRARIES}
+  ${thirdparty_libraries}
 )
 
 add_executable(eigen_node test/eigen_to_tf.cpp)
 target_link_libraries(eigen_node
-  ${catkin_LIBRARIES}
+  ${thirdparty_libraries}
 )

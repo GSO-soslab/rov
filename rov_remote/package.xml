@@ -16,6 +16,8 @@
   <depend>tf</depend>
   <depend>sensor_msgs</depend>
   <depend>tf_conversions</depend>
+  <depend>nortek_dvl</depend>
+  
   <!-- <depend>cv_bridge</depend> -->
 
   <export>
