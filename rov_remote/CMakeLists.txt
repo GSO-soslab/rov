@@ -2,6 +2,27 @@ cmake_minimum_required(VERSION 2.8.3)
 
 project(rov_remote)
 
+# The target architecture.
+# For cross-compilation this should still work as you're supposed to set this var.
+# X64 mean 64-bit generically, whether AMD64 or AARCH64.
+message(STATUS ${CMAKE_SYSTEM_PROCESSOR})
+
+set(TARGET_ARCH "${CMAKE_SYSTEM_PROCESSOR}" CACHE STRING "Target architecture")
+if (TARGET_ARCH MATCHES "^arm")
+  set(ARM 1) # This means AArch32.
+  set(X64 OFF)
+  message(STATUS "Building for ARM")
+elseif (TARGET_ARCH MATCHES "^aarch64")
+  set(AARCH64 1)
+  set(X64 1)
+  message(STATUS "Building for AArch64")
+else ()
+  set(X86 1) # This means IA-32 or AMD64 or 64 other
+  message(STATUS "Building for x86|x64")
+endif ()
+
+
+
 # find_package(OpenCV REQUIRED)
 # message(STATUS "OpenCV library status:")
 # message(STATUS "    config: ${OpenCV_DIR}")
