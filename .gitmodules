@@ -1,0 +1,8 @@
+[submodule "rov_devices/flir_camera_driver"]
+	path = rov_devices/flir_camera_driver
+	url = https://github.com/GSO-soslab/flir_camera_driver
+	branch = main
+[submodule "rov_devices/synchronizer_ros"]
+	path = rov_devices/synchronizer_ros
+	url = https://github.com/GSO-soslab/synchronizer_ros
+	branch = main
