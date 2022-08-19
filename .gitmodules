@@ -18,3 +18,7 @@
 	path = rov_devices/ROS_MSCL
 	url = https://github.com/GSO-soslab/ROS_MSCL
 	branch = main
+[submodule "rov_devices/sonar_oculus"]
+	path = rov_devices/sonar_oculus
+	url = https://github.com/GSO-soslab/sonar_oculus
+	branch = main
