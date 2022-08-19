@@ -47,7 +47,7 @@ if(NOT ARM)
         tf sensor_msgs tf_conversions nortek_dvl
         # cv_bridge
     )
-    
+
     include_directories(
       ${catkin_INCLUDE_DIRS}
       ${EIGEN3_INCLUDE_DIRS}
@@ -93,4 +93,8 @@ if(NOT ARM)
     target_link_libraries(eigen_node
       ${thirdparty_libraries}
     )
+
+else ()
+  message(STATUS "Skip build this on the onboard computer")
+
 endif()
