@@ -5,9 +5,8 @@ project(rov_remote)
 # The target architecture.
 # For cross-compilation this should still work as you're supposed to set this var.
 # X64 mean 64-bit generically, whether AMD64 or AARCH64.
-message(STATUS ${CMAKE_SYSTEM_PROCESSOR})
-
 set(TARGET_ARCH "${CMAKE_SYSTEM_PROCESSOR}" CACHE STRING "Target architecture")
+message(STATUS "found platform: ${CMAKE_SYSTEM_PROCESSOR}")
 if (TARGET_ARCH MATCHES "^arm")
   set(ARM ON) # This means AArch32.
   set(X64 OFF)
