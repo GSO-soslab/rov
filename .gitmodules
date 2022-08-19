@@ -14,3 +14,7 @@
 	path = rov_devices/nortek_dvl
 	url = https://github.com/GSO-soslab/nortek_dvl
 	branch = master
+[submodule "rov_devices/ROS_MSCL"]
+	path = rov_devices/ROS_MSCL
+	url = https://github.com/GSO-soslab/ROS_MSCL
+	branch = main
