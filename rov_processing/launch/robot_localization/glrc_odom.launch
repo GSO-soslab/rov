@@ -18,8 +18,8 @@
     <param name="z_B_D" value="0.391"/>
     <param name="filter_velocity" value="false"/>
     <node name="proc_dvl_node" pkg="rov_processing" type="proc_dvl_serial"  output="screen">
-        <remap from="/buttom_track" to="/rov/sensors/dvl/buttom_track_remap"/>
-        <remap from="/current_profile" to="/rov/sensors/dvl/current_profile_remap"/>
+        <remap from="/buttom_track" to="/rov/sensors/dvl/bottom_track"/>
+        <remap from="/current_profile" to="/rov/sensors/dvl/current_profile"/>
     </node>
 
 
