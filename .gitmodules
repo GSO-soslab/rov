@@ -6,3 +6,11 @@
 	path = rov_devices/synchronizer_ros
 	url = https://github.com/GSO-soslab/synchronizer_ros
 	branch = main
+[submodule "rov_devices/nortek_dvl_ethernet"]
+	path = rov_devices/nortek_dvl_ethernet
+	url = https://github.com/GSO-soslab/nortek_dvl_ethernet
+	branch = main
+[submodule "rov_devices/nortek_dvl"]
+	path = rov_devices/nortek_dvl
+	url = https://github.com/GSO-soslab/nortek_dvl
+	branch = master
