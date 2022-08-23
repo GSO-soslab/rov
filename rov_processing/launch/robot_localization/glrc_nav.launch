@@ -7,11 +7,14 @@
     <!-- Start ROS Bag -->
     <param name="use_sim_time" value="$(arg offline )" />
 
+    <arg name="bag"        default="/home/lin/develop/data/underIce/GLRC/day_3_11/test_2_dvlCorrect.bag" />
+    <arg name="bag_start"  default="0" /> 
+
     <!-- <arg name="bag" default="/home/lin/develop/data/underIce/GLRC/day_3_13/bags/40m_servo60_noLED_noAR_LowFeq10m_dvlCorrect.bag" />
     <arg name="bag_start" default="0" />  -->
 
-    <arg name="bag"        default="/home/lin/develop/data/underIce/GLRC/day_3_11/test_2_dvlCorrect.bag" />
-    <arg name="bag_start"  default="10" /> 
+    <!-- <arg name="bag" default="/home/lin/develop/data/underIce/GLRC/day_3_13/bags/40m_ARTagOn_dvlCorrect.bag" />
+    <arg name="bag_start" default="0" />  -->
 
     <node if="$(arg offline )" pkg="rosbag" type="play" name="rosbag" required="true"
           args="--clock --pause -d 1 -s $(arg bag_start) $(arg bag)" />

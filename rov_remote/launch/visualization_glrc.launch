@@ -6,11 +6,11 @@
 <!-- De-compress the images which compressed for tether transport -->
 <group ns="rov_remote/decompressed">
       <node name="right_republish" type="republish" pkg="image_transport" output="screen"
-            args="compressed  in:=/rov/sensors/stereo/right/image_numbered/image_raw 
+            args="compressed  in:=/rov/sensors/stereo/right/image_raw 
                   raw        out:=/rov_remote/sensors/stereo/right/image_decompressed" />
 
       <node name="left_republish" type="republish" pkg="image_transport" output="screen"
-            args="compressed  in:=/rov/sensors/stereo/left/image_numbered/image_raw
+            args="compressed  in:=/rov/sensors/stereo/left/image_raw
                   raw        out:=/rov_remote/sensors/stereo/left/image_decompressed" />
 
       <node name="sonar_republish" type="republish" pkg="image_transport" output="screen"
@@ -25,8 +25,8 @@
   </node> -->
 
 <!-- visualization -->
-  <node name = "rqt_node" pkg = "rqt_gui" type = "rqt_gui" respawn = "false" output = "screen" 
-        args = "--perspective-file $(find rov_remote)/launch/visualization_config/alaska.perspective"/>
+  <!-- <node name = "rqt_node" pkg = "rqt_gui" type = "rqt_gui" respawn = "false" output = "screen" 
+        args = "-1-perspective-file $(find rov_remote)/launch/visualization_config/alaska.perspective"/> -->
 
   <!-- <node name="path_node" pkg="rov_remote" type="path_node" output="screen" >
       <remap from="odometry" to="/rov/processed/ekf_odometry"/>
