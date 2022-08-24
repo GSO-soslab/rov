@@ -30,8 +30,8 @@ public:
     depth_pub = nh.advertise<geometry_msgs::PoseWithCovarianceStamped>("/rov/processed/dvl/depth_filtered", 5);
     twist_pub = nh.advertise<geometry_msgs::TwistWithCovarianceStamped>("/rov/processed/dvl/twist_filtered", 5);
 
-    buttom_track_sub = nh.subscribe<nortek_dvl::ButtomTrack> 
-                       ("/buttom_track", 1, &ProcessDvl::buttomTrackCallback, this);
+    bottom_track_sub = nh.subscribe<nortek_dvl::ButtomTrack> 
+                       ("/bottom_track", 1, &ProcessDvl::buttomTrackCallback, this);
     current_profile_sub = nh.subscribe<nortek_dvl::CurrentProfile> 
                         ("/current_profile", 1, &ProcessDvl::currentProfileCallback, this);
 
@@ -60,7 +60,7 @@ private:
   ros::Publisher cloud_pub;
 
   // ros::Subscriber odom_sub;
-  ros::Subscriber buttom_track_sub;
+  ros::Subscriber bottom_track_sub;
   ros::Subscriber current_profile_sub;
 
   // buff
