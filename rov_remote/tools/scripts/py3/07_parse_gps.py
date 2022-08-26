@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+#usage: python3 /home/lin/develop/ros/rov_ws/src/rov/rov_remote/tools/scripts/py3/07_parse_gps.py
 
 import csv
 import matplotlib.pyplot as plt

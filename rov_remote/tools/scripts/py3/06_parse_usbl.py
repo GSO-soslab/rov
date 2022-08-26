@@ -5,6 +5,12 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
+import rosbag
+import rospy
+from nav_msgs.msg import Odometry
+
+### usage: python3 /home/lin/develop/ros/rov_ws/src/rov/rov_remote/tools/scripts/py3/06_parse_usbl.py
+
 ###################################################################################################
 ####                              Separate data into ahrs and usbl                             ####
 ###################################################################################################
@@ -12,8 +18,8 @@ import numpy as np
 #### Create separated data filename
 
 # data_filename = '/home/lin/develop/data/underIce/alaska/03_23/2022-03-24-data-01.csv'
-data_filename = '/home/lin/develop/data/underIce/alaska/03_29/2022-03-29-data-01.csv'
-# data_filename = '/home/lin/develop/data/underIce/alaska/03_30/2022-03-30-data-01.csv'
+# data_filename = '/home/lin/develop/data/underIce/alaska/03_29/2022-03-29-data-01.csv'
+data_filename = '/home/lin/develop/data/underIce/alaska/03_30/2022-03-30-data-01.csv'
 
 # generate new filename for separated data
 index = data_filename.find('.csv')
@@ -53,6 +59,21 @@ print('finsih separate ahrs and usbl !!!')
 
 
 #### Get entire USBL data
+# 2_Computer_Timestamp: 
+#   - Navigation computer’s system time, millisecond
+#   - after SiNAPS processed and save to database
+#   - 1648581785941
+# 3_Measurement_Timestamp: 
+#   - Positioning timestamp
+#   - example:1648581785.646
+# 5_Transceiver_Timestamp:
+#   - USBL time outputted the positioning data to SiNAPS
+#   - the number of seconds elapsed since the device has been powered on.
+#   - example: 64.510671
+# 8_Positioning_Timestamp: 
+#   - USBL time when received transponder’s reply
+#   - example: not display in this section
+
 df = pd.read_csv(
   usbl_filename, sep=",", header=None, 
   names=["1_Name", "2_Computer_Timestamp", "3_Measurement_Timestamp", 
@@ -71,14 +92,15 @@ df = pd.read_csv(
          "46_Unkown_1", "47_Unkown_2", "48_Unkown_3", "49_Unkown_4"])
 
 #### get each value
-name      =  list(df["1_Name"])
-t         =  list(df["2_Computer_Timestamp"])
-accuracy  =  list(df["10_Accuracy"])
-rssi      =  list(df["6_RSSI"])
-integrity =  list(df["7_INTEGRITY"])
-raw_X     =  list(df["11_Raw_X"])
-raw_Y     =  list(df["12_Raw_Y"])
-raw_Z     =  list(df["13_Raw_Z"])
+name                  =  list(df["1_Name"])
+computer_time         =  list(df["2_Computer_Timestamp"])
+measurement_time      =  list(df["3_Measurement_Timestamp"])
+accuracy              =  list(df["10_Accuracy"]) # positioning accuracy
+rssi                  =  list(df["6_RSSI"]) # Higher value represent strong signal
+integrity             =  list(df["7_INTEGRITY"]) # Higher value means less distorted signal, less then 100 means bad
+raw_X                 =  list(df["11_Raw_X"])
+raw_Y                 =  list(df["12_Raw_Y"])
+raw_Z                 =  list(df["13_Raw_Z"])
 # raw_E =  list(df["14_Raw_E"])
 # raw_N =  list(df["15_Raw_N"])
 # raw_U =  list(df["16_Raw_U"])
@@ -90,12 +112,12 @@ raw_Z     =  list(df["13_Raw_Z"])
 # D_CRP =  list(df["22_D_CRP"])         
 
 # check data size
-if len(accuracy) != len(raw_X) != len(raw_Y) != len(raw_Z) != len(rssi) != len(integrity) != len(t):
+if len(accuracy) != len(raw_X) != len(raw_Y) != len(raw_Z) != len(rssi) != len(integrity) != len(computer_time) != len(measurement_time):
     print('data size not right !')
 
 # generate time step
 time_step = [] 
-for i in range(len(t)):
+for i in range(len(computer_time)):
     time_step.append(i)
 
 print(' ')
@@ -105,10 +127,26 @@ print('finsih parse ahrs and usbl !!!')
 ####                                       Plot usbl data                                      ####
 ###################################################################################################
 
-### plot accuracy:
-# fig_1 = plt.figure(1)
-# plt.plot(x_axis, accuracy)
-# plt.tight_layout()
+###########################         plot timeoffset        ########################### 
+
+### generate time offset: 2_Computer_Timestamp - 8_Positioning_Timestamp
+
+offset = []
+for i in range(len(computer_time)):
+    offset.append(computer_time[i]/1e3 - measurement_time[i])
+
+### plot
+fig = plt.figure(1)
+ax = fig.add_subplot(111)
+plot= ax.scatter(time_step, offset)
+ax.locator_params(nbins=6)
+ax.set_xlabel('timestep [scale]', fontsize=11)
+ax.set_ylabel('time [s]', fontsize=11)
+plt.tight_layout()
+plt.title("timeoffset: 2_Computer_Timestamp - 8_Positioning_Timestamp")
+
+
+###########################         plot XYZ        ########################### 
 
 ### Create cubic bounding box to simulate equal aspect ratio
 ### from: https://stackoverflow.com/questions/13685386/matplotlib-equal-unit-length-with-equal-aspect-ratio-z-axis-is-not-equal-to
@@ -118,9 +156,8 @@ mid_x = (max(raw_X) + min(raw_X)) * 0.5
 mid_y = (max(raw_Y) + min(raw_Y)) * 0.5
 mid_z = (max(raw_Z) + min(raw_Z)) * 0.5
 
-###########################         plot XYZ        ########################### 
 # plot
-fig = plt.figure(1)
+fig = plt.figure(2)
 ax = fig.add_subplot(111, projection='3d')
 traj= ax.scatter(raw_X, raw_Y, raw_Z,)
 ax.locator_params(nbins=6)
@@ -139,15 +176,19 @@ plt.title("USBL RAW XYZ plot")
 fliter_x = []
 fliter_y = []
 fliter_z = []
+fliter_time = []
 fliter_rule = []
+accuracy_max = max(accuracy)
+accuracy_threshold = 4
 for i in range(len(raw_X)):
-    if accuracy[i] < 10:
+    if accuracy[i] < accuracy_max:
         fliter_rule.append(accuracy[i])
         fliter_x.append(raw_X[i])
         fliter_y.append(raw_Y[i])
         fliter_z.append(raw_Z[i])
+        fliter_time.append(measurement_time[i])
 # plot
-fig = plt.figure(2)
+fig = plt.figure(3)
 ax = fig.add_subplot(111, projection='3d')
 traj= ax.scatter(fliter_x, fliter_y, fliter_z, c=fliter_rule, s=5, cmap='jet')
 height_bar = fig.colorbar(traj, pad=0.2)
@@ -162,6 +203,27 @@ ax.set_zlim(mid_z - max_range, mid_z + max_range)
 plt.tight_layout()
 plt.title("USBL RAW XYZ plot with Accuracy")
 
+# save
+# outbag = rosbag.Bag("/home/lin/develop/data/underIce/alaska/03_29/usbl_odom.bag", 'w')
+# print("working on the parsing ......")
+# print()
+
+# if len(fliter_time) != len(fliter_x) != len(fliter_y) != len(fliter_z) :
+#     print('filtered data size not right !')
+
+# for i in range(len(fliter_time)):
+#     msg = Odometry()
+#     msg.header.frame_id = "usbl"
+#     msg.header.stamp = rospy.Time.from_sec(fliter_time[i])
+#     msg.child_frame_id = "modem"
+#     msg.pose.pose.position.x = fliter_x[i]
+#     msg.pose.pose.position.y = fliter_y[i]
+#     msg.pose.pose.position.z = fliter_z[i]
+#     outbag.write("/usbl_odom", msg, msg.header.stamp)
+
+# print("finsih save rosbag!")
+# outbag.close()
+
 ###########################    plot XYZ with RSSI    ###########################
 
 # filtering
@@ -169,14 +231,16 @@ fliter_x = []
 fliter_y = []
 fliter_z = []
 fliter_rule = []
+rssi_min = min(rssi)
+rssi_threshold = -100
 for i in range(len(raw_X)):
-    if rssi[i] > -100:
+    if rssi[i] > rssi_min:
         fliter_rule.append(rssi[i])
         fliter_x.append(raw_X[i])
         fliter_y.append(raw_Y[i])
         fliter_z.append(raw_Z[i])
 # plot
-fig = plt.figure(3)
+fig = plt.figure(4)
 ax = fig.add_subplot(111, projection='3d')
 traj = ax.scatter(fliter_x, fliter_y, fliter_z, c=fliter_rule, s=5, cmap='jet')
 height_bar = fig.colorbar(traj, pad=0.2)
@@ -197,14 +261,16 @@ fliter_x = []
 fliter_y = []
 fliter_z = []
 fliter_rule = []
+integrity_max = max(integrity)
+integrity_threshold = 500
 for i in range(len(raw_X)):
-    if integrity[i] < 500:
+    if integrity[i] < integrity_max:
         fliter_rule.append(integrity[i])
         fliter_x.append(raw_X[i])
         fliter_y.append(raw_Y[i])
         fliter_z.append(raw_Z[i])
 # plot
-fig = plt.figure(4)
+fig = plt.figure(5)
 ax = fig.add_subplot(111, projection='3d')
 traj = ax.scatter(fliter_x, fliter_y, fliter_z, c=fliter_rule, s=5, cmap='jet')
 height_bar = fig.colorbar(traj, pad=0.2)
@@ -220,7 +286,7 @@ plt.tight_layout()
 plt.title("USBL RAW XYZ plot with INTEGRAITY")
 
 ###########################           plot XYZ with time      ###########################
-fig = plt.figure(5)
+fig = plt.figure(6)
 ax = fig.add_subplot(111, projection='3d')
 traj = ax.scatter(raw_X, raw_Y, raw_Z, c=time_step, s=5, cmap='jet')
 height_bar = fig.colorbar(traj, pad=0.2)
