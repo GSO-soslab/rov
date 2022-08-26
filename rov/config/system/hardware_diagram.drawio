@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e" pages="5">
     <diagram name="Alaska-endplate" id="hXlwxVd-z-dH4Q1fU9hr">
-        <mxGraphModel dx="204" dy="605" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="-58" dy="605" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
             <root>
                 <mxCell id="tW37kBb9XDGWjnNoaw7D-0"/>
                 <mxCell id="tW37kBb9XDGWjnNoaw7D-1" parent="tW37kBb9XDGWjnNoaw7D-0"/>
@@ -925,7 +925,7 @@
         </mxGraphModel>
     </diagram>
     <diagram name="Seafloor-endplate" id="r-4MWjEEbP_NqbpYfpwI">
-        <mxGraphModel dx="204" dy="628" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="-58" dy="605" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>

@@ -57,7 +57,7 @@ or so.
 
 #########################################################################################################3
 # Example:
-# python3 /home/lin/develop/ros/soslab_ws/src/rov/rov_remote/tools/scripts/py3/03_verify_timeoffset.py \
+# python3 /home/lin/develop/ros/rov_ws/src/rov/rov_remote/tools/scripts/py3/03_verify_timeoffset.py \
 # dvl_sync.bag /rov/sensors/dvl/df21/df21_sync
 #########################################################################################################3
 
@@ -219,16 +219,16 @@ def printMsgsInBagFile(args):
         # sync_time = msg.header.stamp.to_sec()
 
         ### DVL IO time
-        # io_time = msg.ds_header.io_time.to_sec()
-        # sync_time = msg.header.stamp.to_sec()
+        io_time = msg.ds_header.io_time.to_sec()
+        sync_time = msg.header.stamp.to_sec()
         # print("io_time: %d; sync_time %d." % (io_time,sync_time))
         
         # test = msg.header.seq
         # test_system_t = msg.dvl_time
 
         ### AHRS IO time
-        io_time = msg.time_ref.to_sec()
-        sync_time = msg.header.stamp.to_sec()
+        # io_time = msg.time_ref.to_sec()
+        # sync_time = msg.header.stamp.to_sec()
         
         ### Arduino time
         # io_time = msg.time.to_sec()
@@ -239,7 +239,7 @@ def printMsgsInBagFile(args):
             array_step.append([timestep])
             array_io.append([io_time])
             array_sync.append([sync_time])
-            array_offset.append([io_time - sync_time]) 
+            array_offset.append(io_time - sync_time) 
 
             array_offset_io.append([0]) 
             array_offset_sync.append([0]) 
@@ -256,7 +256,7 @@ def printMsgsInBagFile(args):
             array_step.append([timestep])
             array_io.append([io_time])
             array_sync.append([sync_time])
-            array_offset.append([io_time - sync_time]) 
+            array_offset.append(io_time - sync_time) 
 
         last_io_t = io_time 
         last_sync_t = sync_time
@@ -277,16 +277,21 @@ def printMsgsInBagFile(args):
 
 
     ### Figure 1
-    plt.figure(1)
-    plt.subplot(1, 1, 1)
-    plt.scatter(array_step, array_offset)
-    plt.xlabel('timestamp (s)')
-    plt.ylabel('timeoffset (s)')
-    plt.title('IO - SYNC time offset')
+    fig = plt.figure(1)
+    ax = fig.add_subplot(111)
+    plot= ax.scatter(array_step, array_offset)
+    ax.locator_params(nbins=10)
+    ax.set_xlabel('time [s]', fontsize=20)
+    ax.set_ylabel('timeoffset [s]', fontsize=20)
+    avg = sum(array_offset) / len(array_offset)
+    ax.set_ylim(avg - 0.05, avg + 0.05)
+    plt.tight_layout()
+    # plt.title("AHRS",fontsize=20)
+    # plt.title("Camera",fontsize=20)
+    plt.title("DVL",fontsize=20)
 
     ### Figure 2
     plt.figure(2)
-
     plt.subplot(1, 2, 1)
     plt.scatter(array_step, array_io)
     plt.xlabel('timestamp (s)')
@@ -301,7 +306,6 @@ def printMsgsInBagFile(args):
 
     ### Figure 3
     plt.figure(3)
-
     plt.subplot(1, 2, 1)
     plt.scatter(array_step, array_offset_io)
     plt.xlabel('timestamp (s)')
