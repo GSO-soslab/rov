@@ -18,8 +18,8 @@ from nav_msgs.msg import Odometry
 #### Create separated data filename
 
 # data_filename = '/home/lin/develop/data/underIce/alaska/03_23/2022-03-24-data-01.csv'
-# data_filename = '/home/lin/develop/data/underIce/alaska/03_29/2022-03-29-data-01.csv'
-data_filename = '/home/lin/develop/data/underIce/alaska/03_30/2022-03-30-data-01.csv'
+data_filename = '/home/lin/develop/data/underIce/alaska/03_29/2022-03-29-data-01.csv'
+# data_filename = '/home/lin/develop/data/underIce/alaska/03_30/2022-03-30-data-01.csv'
 
 # generate new filename for separated data
 index = data_filename.find('.csv')
@@ -173,24 +173,30 @@ plt.title("USBL RAW XYZ plot")
 ########################### plot XYZ with accuracy ########################### 
 
 # filtering
-fliter_x = []
-fliter_y = []
-fliter_z = []
-fliter_time = []
-fliter_rule = []
+filter_x = []
+filter_y = []
+filter_z = []
+# filter_time = []
+filter_rule = []
 accuracy_max = max(accuracy)
-accuracy_threshold = 4
+accuracy_threshold = 5
+filter_accuracy = []
+
 for i in range(len(raw_X)):
-    if accuracy[i] < accuracy_max:
-        fliter_rule.append(accuracy[i])
-        fliter_x.append(raw_X[i])
-        fliter_y.append(raw_Y[i])
-        fliter_z.append(raw_Z[i])
-        fliter_time.append(measurement_time[i])
+    if accuracy[i] < accuracy_threshold:
+        filter_rule.append(accuracy[i])
+        filter_x.append(raw_X[i])
+        filter_y.append(raw_Y[i])
+        filter_z.append(raw_Z[i])
+        # filter_time.append(measurement_time[i])
+
+        filter_accuracy.append(1)
+    else:
+        filter_accuracy.append(0)
 # plot
 fig = plt.figure(3)
 ax = fig.add_subplot(111, projection='3d')
-traj= ax.scatter(fliter_x, fliter_y, fliter_z, c=fliter_rule, s=5, cmap='jet')
+traj= ax.scatter(filter_x, filter_y, filter_z, c=filter_rule, s=5, cmap='jet')
 height_bar = fig.colorbar(traj, pad=0.2)
 height_bar.set_label("Accuracy [m]", fontsize=12)
 ax.locator_params(nbins=6)
@@ -203,46 +209,33 @@ ax.set_zlim(mid_z - max_range, mid_z + max_range)
 plt.tight_layout()
 plt.title("USBL RAW XYZ plot with Accuracy")
 
-# save
-# outbag = rosbag.Bag("/home/lin/develop/data/underIce/alaska/03_29/usbl_odom.bag", 'w')
-# print("working on the parsing ......")
-# print()
-
-# if len(fliter_time) != len(fliter_x) != len(fliter_y) != len(fliter_z) :
-#     print('filtered data size not right !')
-
-# for i in range(len(fliter_time)):
-#     msg = Odometry()
-#     msg.header.frame_id = "usbl"
-#     msg.header.stamp = rospy.Time.from_sec(fliter_time[i])
-#     msg.child_frame_id = "modem"
-#     msg.pose.pose.position.x = fliter_x[i]
-#     msg.pose.pose.position.y = fliter_y[i]
-#     msg.pose.pose.position.z = fliter_z[i]
-#     outbag.write("/usbl_odom", msg, msg.header.stamp)
-
-# print("finsih save rosbag!")
-# outbag.close()
 
 ###########################    plot XYZ with RSSI    ###########################
 
 # filtering
-fliter_x = []
-fliter_y = []
-fliter_z = []
-fliter_rule = []
+filter_x = []
+filter_y = []
+filter_z = []
+filter_rule = []
 rssi_min = min(rssi)
-rssi_threshold = -100
+rssi_threshold = -50
+filter_rssi = []
+
 for i in range(len(raw_X)):
-    if rssi[i] > rssi_min:
-        fliter_rule.append(rssi[i])
-        fliter_x.append(raw_X[i])
-        fliter_y.append(raw_Y[i])
-        fliter_z.append(raw_Z[i])
+    if rssi[i] > rssi_threshold:
+        filter_rule.append(rssi[i])
+        filter_x.append(raw_X[i])
+        filter_y.append(raw_Y[i])
+        filter_z.append(raw_Z[i])
+
+        filter_rssi.append(1)
+    else:
+        filter_rssi.append(0)
+
 # plot
 fig = plt.figure(4)
 ax = fig.add_subplot(111, projection='3d')
-traj = ax.scatter(fliter_x, fliter_y, fliter_z, c=fliter_rule, s=5, cmap='jet')
+traj = ax.scatter(filter_x, filter_y, filter_z, c=filter_rule, s=5, cmap='jet')
 height_bar = fig.colorbar(traj, pad=0.2)
 height_bar.set_label("RSSI [dB re 1V]", fontsize=12)
 ax.locator_params(nbins=6)
@@ -257,22 +250,29 @@ plt.title("USBL RAW XYZ plot with RSSI")
 
 ###########################          plot XYZ with integrity    ###########################
 # filtering
-fliter_x = []
-fliter_y = []
-fliter_z = []
-fliter_rule = []
-integrity_max = max(integrity)
-integrity_threshold = 500
+filter_x = []
+filter_y = []
+filter_z = []
+filter_rule = []
+integrity_min = min(integrity)
+integrity_threshold = 100
+filter_intergity = []
+
 for i in range(len(raw_X)):
-    if integrity[i] < integrity_max:
-        fliter_rule.append(integrity[i])
-        fliter_x.append(raw_X[i])
-        fliter_y.append(raw_Y[i])
-        fliter_z.append(raw_Z[i])
+    if integrity[i] > integrity_threshold:
+        filter_rule.append(integrity[i])
+        filter_x.append(raw_X[i])
+        filter_y.append(raw_Y[i])
+        filter_z.append(raw_Z[i])
+
+        filter_intergity.append(1)
+    else:
+        filter_intergity.append(0)
+
 # plot
 fig = plt.figure(5)
 ax = fig.add_subplot(111, projection='3d')
-traj = ax.scatter(fliter_x, fliter_y, fliter_z, c=fliter_rule, s=5, cmap='jet')
+traj = ax.scatter(filter_x, filter_y, filter_z, c=filter_rule, s=5, cmap='jet')
 height_bar = fig.colorbar(traj, pad=0.2)
 height_bar.set_label("INTEGRAITY [integer]", fontsize=12)
 ax.locator_params(nbins=6)
@@ -286,12 +286,32 @@ plt.tight_layout()
 plt.title("USBL RAW XYZ plot with INTEGRAITY")
 
 ###########################           plot XYZ with time      ###########################
+time_max = max(measurement_time)
+time_min = min(measurement_time)
+filter_x = []
+filter_y = []
+filter_z = []
+filter_rule = []
+filter_time = []
+time_threshold_min = 1648581841.23
+time_threshold_max = 1648583440.19
+
+for i in range(len(measurement_time)):
+    if measurement_time[i] >= time_threshold_min and measurement_time[i] <= time_threshold_max:
+        filter_x.append(raw_X[i])
+        filter_y.append(raw_Y[i])
+        filter_z.append(raw_Z[i])
+        filter_rule.append(i)
+
+        filter_time.append(1)
+    else:
+        filter_time.append(0)
+
 fig = plt.figure(6)
 ax = fig.add_subplot(111, projection='3d')
-traj = ax.scatter(raw_X, raw_Y, raw_Z, c=time_step, s=5, cmap='jet')
+traj = ax.scatter(filter_x, filter_y, filter_z, c=filter_rule, s=5, cmap='jet')
 height_bar = fig.colorbar(traj, pad=0.2)
 height_bar.set_label("time_step [scalar]", fontsize=12)
-
 ax.locator_params(nbins=6)
 ax.set_xlabel('X [m]', fontsize=11)
 ax.set_ylabel('Y [m]', fontsize=11)
@@ -301,5 +321,52 @@ ax.set_ylim(mid_y - max_range, mid_y + max_range)
 ax.set_zlim(mid_z - max_range, mid_z + max_range)
 plt.tight_layout()
 plt.title("USBL RAW XYZ plot with time step")
+
+
+###########################           save to rosbag      ###########################
+
+# save
+outbag = rosbag.Bag("/home/lin/develop/data/underIce/alaska/03_29/usbl_test.bag", 'w')
+print("working on the parsing ......")
+print()
+
+if len(filter_accuracy) != len(filter_rssi) != len(filter_intergity) != len(measurement_time) != len(filter_time):
+    print('filtered data size not right !')
+
+overall_x = []
+overall_y = []
+overall_z = []
+for i in range(len(measurement_time)):
+
+    if filter_accuracy[i]==1 and filter_rssi[i]==1 and filter_intergity[i]==1 and filter_time[i]==1:
+        msg = Odometry()
+        msg.header.frame_id = "usbl"
+        msg.header.stamp = rospy.Time.from_sec(measurement_time[i])
+        msg.child_frame_id = "modem"
+        msg.pose.pose.position.x = raw_X[i]
+        msg.pose.pose.position.y = raw_Y[i]
+        msg.pose.pose.position.z = raw_Z[i]
+        outbag.write("/usbl_odom", msg, msg.header.stamp)
+
+        overall_x.append(raw_X[i])
+        overall_y.append(raw_Y[i])
+        overall_z.append(raw_Z[i])
+
+print("finsih save rosbag!")
+outbag.close()
+
+# plot overall filtered data
+fig = plt.figure(7)
+ax = fig.add_subplot(111, projection='3d')
+traj = ax.scatter(overall_x, overall_y, overall_z)
+ax.locator_params(nbins=6)
+ax.set_xlabel('X [m]', fontsize=11)
+ax.set_ylabel('Y [m]', fontsize=11)
+ax.set_zlabel('Z [m]', fontsize=11)
+ax.set_xlim(mid_x - max_range, mid_x + max_range)
+ax.set_ylim(mid_y - max_range, mid_y + max_range)
+ax.set_zlim(mid_z - max_range, mid_z + max_range)
+plt.tight_layout()
+plt.title("USBL RAW XYZ plot with overall filtering!")
 
 plt.show()
