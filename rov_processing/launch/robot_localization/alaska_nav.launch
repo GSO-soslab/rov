@@ -19,9 +19,10 @@
     <!-- <arg name="bag" default="/home/lin/develop/data/underIce/alaska/03_28/full_imgCompressed_timeIO.bag" />
     <arg name="bag_start"  default="0" />  -->
 
-    <arg name="bag" default="/home/lin/develop/data/underIce/alaska/03_29/full_imgCompressed_dvlRecoveried_timeRestamped_timeSync.bag" />
+    <arg name="bag" default="/home/lin/develop/data/underIce/alaska/03_29/full_msckf_duration.bag" />
+    <!-- <arg name="bag" default="/home/lin/develop/data/underIce/alaska/03_29/full_imgCompressed_dvlRecoveried_timeRestamped_timeSync.bag" /> -->
     <arg name="bag_start"  default="0" /> 
-    <arg name="bag_duration"  default="1599" /> 
+    <arg name="bag_duration"  default="1549" /> 
     
     <!-- <arg name="bag" default="/home/lin/develop/data/underIce/alaska/03_30/full_dvlCorrect_timeRestamp_imgCompressed_timeSync.bag" />
     <arg name="bag_start"  default="0" /> 

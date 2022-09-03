@@ -6,6 +6,7 @@
     <param name="estimated_soundSpeed" value="1500"/>
     <param name="z_B_D" value="0.409575"/>
     <param name="pub_pointcloud" value="true"/>
+    <param name="do_filter" value="false"/>
     <node  name="proc_dvl_node" pkg="rov_processing" type="proc_dvl_ethernet"  output="screen">
         <!-- sub -->
         <!-- <remap from="/dvl"         to="/rov/sensors/dvl/df21"/> -->
@@ -18,28 +19,25 @@
     <!-- remap topic -->
 
     <!-- Pre-processing IMU: filter raw imu using madgwick filter -->
-    <node name="madgwick_imu" pkg="imu_filter_madgwick" type="imu_filter_node" output="screen">
+    <!-- <node name="madgwick_imu" pkg="imu_filter_madgwick" type="imu_filter_node" output="screen">
         <remap from="/imu/data_raw" to="/rov/sensors/ahrs/imu/data"/>
         <remap from="/imu/mag" to="/rov/sensors/ahrs/mag" />
         <remap from="/imu/data" to="/rov/processed/ahrs/imu_madgwick"/>
 
         <param name="use_mag" value="false"/>
         <param name="use_magnetic_field_msg" value="false"/>
-        <!-- <param name="mag_bias_x" value="-0.07269402"/>  
-        <param name="mag_bias_y" value=" 0.03274165"/>  
-        <param name="mag_bias_z" value=" 0.06079664"/>  -->
-
         <param name="orientation_stddev" value=".005"/> 
         <param name="gain" value="0.5" />
         <param name="zeta" value="0.001" />
         <param name="publish_tf" value="false"/>
         <param name="remove_gravity_vector" value="false"/>
-    </node>
+    </node> -->
 
 
     <!-- Robot Localization EKF Odometry -->
     <node name="ekf_odometry" pkg="robot_localization" type="ekf_localization_node" clear_params="true" output="screen">
-        <rosparam command="load" file="$(find rov_processing)/config/robot_localization/imu_vel_dep.yaml" />
+        <rosparam command="load" file="$(find rov_processing)/config/robot_localization/alaska/imu_vel_dep_nofilter.yaml" />
+        <!-- <rosparam command="load" file="$(find rov_processing)/config/robot_localization/imu_vel_dep.yaml" /> -->
         <remap from="odometry/filtered" to="/rov/processed/robot_localization_odometry"/>
     </node>
 

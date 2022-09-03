@@ -37,6 +37,7 @@ public:
     nh.param<double>("estimated_soundSpeed", estimated_soundSpeed, 1500);
     nh.param<double>("z_B_D", z_B_D, 1.0);
     nh.param<bool>("pub_pointcloud", pub_pointcloud, false);
+    nh.param<bool>("do_filter", do_filter, true);
 
     // init 
     init();
@@ -83,6 +84,7 @@ private:
   double standard_soundSpeed;
   double z_B_D;
   bool pub_pointcloud;
+  bool do_filter;
 };
 
 void ProcessDvl::init()
@@ -202,8 +204,15 @@ void ProcessDvl::process()
       geometry_msgs::PoseWithCovarianceStamped depth_msg;
       depth_msg.header = header_dvl;
       depth_msg.header.frame_id = "odom";
-      depth_msg.pose.pose.position.z = depth_kf_.state()(0); 
-      depth_msg.pose.covariance[14] = depth_kf_.covariance()(0,0);
+
+      if(do_filter){
+        depth_msg.pose.pose.position.z = depth_kf_.state()(0); 
+        depth_msg.pose.covariance[14] = depth_kf_.covariance()(0,0);
+      }
+      else{
+        depth_msg.pose.pose.position.z = y_depth(0); 
+      }
+
       depth_pub.publish(depth_msg);
 
     /**************************** Handle velocity ***********************/
@@ -234,12 +243,21 @@ void ProcessDvl::process()
       // publish msg
       geometry_msgs::TwistWithCovarianceStamped twist_msg;
       twist_msg.header = header_dvl;
-      twist_msg.twist.twist.linear.x = twist_kf_.state()(0);  
-      twist_msg.twist.twist.linear.y = twist_kf_.state()(1); 
-      twist_msg.twist.twist.linear.z = twist_kf_.state()(2); 
-      twist_msg.twist.covariance[0] = twist_kf_.covariance()(0,0);
-      twist_msg.twist.covariance[7] = twist_kf_.covariance()(1,1);
-      twist_msg.twist.covariance[14] = twist_kf_.covariance()(2,2);
+
+      if(do_filter) {
+        twist_msg.twist.twist.linear.x = twist_kf_.state()(0);  
+        twist_msg.twist.twist.linear.y = twist_kf_.state()(1); 
+        twist_msg.twist.twist.linear.z = twist_kf_.state()(2); 
+        twist_msg.twist.covariance[0] = twist_kf_.covariance()(0,0);
+        twist_msg.twist.covariance[7] = twist_kf_.covariance()(1,1);
+        twist_msg.twist.covariance[14] = twist_kf_.covariance()(2,2);
+      }
+      else{
+        twist_msg.twist.twist.linear.x = v_x;  
+        twist_msg.twist.twist.linear.y = v_y; 
+        twist_msg.twist.twist.linear.z = v_z; 
+      }
+
       twist_pub.publish(twist_msg);
 
     /**************************** Handle pointcloud ***********************/
