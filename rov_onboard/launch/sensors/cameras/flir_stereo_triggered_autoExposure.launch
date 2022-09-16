@@ -78,12 +78,12 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
       </node>
 
       <!-- +++++++++++++ Switch camera time to Arduino time ++++++++++++++++++++ -->
-      <node pkg="nodelet" type="nodelet" name="synchronizer_nodelet"
+      <!-- <node pkg="nodelet" type="nodelet" name="synchronizer_nodelet"
             args="load synchronizer_ros/SynchronizerNodelet /$(arg camera_manager)"
             output="screen" required="true">
         <param name="camera_topic" type="string" value="/$(arg camera_name)/right/" />
         <param name="synchronizer_topic" type="string" value="/rov/synchronizer/cam/" />
-      </node>
+      </node> -->
       
       <!-- Disbale the orginal camera driver image_transport publishing -->
       <group ns="image_raw">
@@ -145,12 +145,12 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 
 
       <!-- +++++++++++++ Switch camera time to Arduino time ++++++++++++++++++++ -->
-      <node pkg="nodelet" type="nodelet" name="synchronizer_nodelet"
+      <!-- <node pkg="nodelet" type="nodelet" name="synchronizer_nodelet"
             args="load synchronizer_ros/SynchronizerNodelet /$(arg camera_manager)"
             output="screen" required="true">
         <param name="camera_topic" type="string" value="/$(arg camera_name)/left/" />
         <param name="synchronizer_topic" type="string" value="/rov/synchronizer/cam/" />
-      </node>
+      </node> -->
 
       <!-- Disbale the orginal camera driver image_transport publishing -->
       <group ns="image_raw">
