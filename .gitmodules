@@ -22,3 +22,7 @@
 	path = rov_devices/sonar_oculus
 	url = https://github.com/GSO-soslab/sonar_oculus
 	branch = main
+[submodule "rov_devices/synchronizer_arduino"]
+	path = rov_devices/synchronizer_arduino
+	url = https://github.com/GSO-soslab/synchronizer_arduino
+	branch = main
