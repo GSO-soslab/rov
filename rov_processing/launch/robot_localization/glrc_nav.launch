@@ -8,7 +8,7 @@
     <param name="use_sim_time" value="$(arg offline )" />
 
     <arg name="bag" 
-         default="/home/lin/develop/data/underIce/GLRC/day_3_13/bags/40m_servo60_noLED_noAR_LowFeq10m_dvlCorrect.bag" />
+         default="/home/lin/develop/data/underIce/GLRC/day_3_13/40m_servo60_noLED_noAR_LowFeq10m/data_dvlCorrect.bag" />
     <arg name="bag_start" default="0" /> 
 
     <!-- <arg name="bag"        default="/home/lin/develop/data/underIce/GLRC/day_3_11/test_2_dvlCorrect.bag" />
