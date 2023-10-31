@@ -8,7 +8,30 @@
 
 ### dependency:
 **FLIR:**
-- install spinnaker
+- Install spinnaker
+  - Go to the FLIR download [website](https://www.flir.com/products/spinnaker-sdk/?vertical=machine+vision&segment=iis), require a FLIR account login. Or use [this one for Ubuntu 20.04](/home/lin/develop/ros/rov_ws/src/rov/rov/config/flir_camera/spinnaker-3.1.0.79-arm64-pkg.tar.gz)
+  - untar it: `tar -xf spinnaker*.tar.gz`
+  - cd ~/spinnaker*/
+  - install denpendency (for more information, check the installation readme): 
+    - `sudo apt-get install libusb-1.0-0 libusb-1.0-0-dev` 
+    - `sudo apt install qt5-default` and if error happens try this:`sudo apt --fix-broken install`
+  - install: `sudo sh install_spinnaker_arm.sh`
+    - *Would you like to add a udev entry to allow access to USB hardware?* : Y
+    - *Adding new members to usergroup flirimaging...* : username(e.g., alpha)
+    - *Writing the udev rules file...* : Y
+    - *Would you like to set USB-FS memory size to 1000 MB at startup (via /etc/rc.local)?*: Y
+
+- Install ROS1 driver
+  ```sh
+  $ cd ~/your_path
+  $ git clone https://github.com/GSO-soslab/flir_camera_driver
+  $ git clone https://github.com/GSO-soslab/synchronizer_ros
+  $ git clone https://github.com/GSO-soslab/nortek_dvl_ethernet
+  $ cd ~/your_workspace/
+  $ rosdep install --from-paths src --ignore-src --rosdistro ${ROS_DISTRO} -y
+  $ sudo apt install libopencv-dev python3-opencv
+  $ catkin build -DCMAKE_BUILD_TYPE=Release -j$(nproc)
+  ```
 
 **Arduino:**
 - install Arduino:
