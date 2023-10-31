@@ -9,11 +9,11 @@
 ### dependency:
 **FLIR:**
 - Install spinnaker
-  - Go to the FLIR download [website](https://www.flir.com/products/spinnaker-sdk/?vertical=machine+vision&segment=iis), require a FLIR account login. Or use [this one for Ubuntu 20.04](/home/lin/develop/ros/rov_ws/src/rov/rov/config/flir_camera/)
+  - Go to the FLIR download [website](https://www.flir.com/products/spinnaker-sdk/?vertical=machine+vision&segment=iis), require a FLIR account login. Or use [this one for Ubuntu 20.04](rov/config/flir_camera/)
   - untar it: `tar -xf spinnaker*.tar.gz`
   - cd ~/spinnaker*/
   - install denpendency (for more information, check the installation readme): 
-    - `sudo apt-get install libusb-1.0-0 libusb-1.0-0-dev` 
+    - `sudo apt-get install libusb-1.0-0 libusb-1.0-0-dev`
     - `sudo apt install qt5-default` and if error happens try this:`sudo apt --fix-broken install`
   - install: `sudo sh install_spinnaker_arm.sh`
     - *Would you like to add a udev entry to allow access to USB hardware?* : Y
