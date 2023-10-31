@@ -9,7 +9,7 @@
 ### dependency:
 **FLIR:**
 - Install spinnaker
-  - Go to the FLIR download [website](https://www.flir.com/products/spinnaker-sdk/?vertical=machine+vision&segment=iis), require a FLIR account login. Or use [this one for Ubuntu 20.04](/home/lin/develop/ros/rov_ws/src/rov/rov/config/flir_camera/spinnaker-3.1.0.79-arm64-pkg.tar.gz)
+  - Go to the FLIR download [website](https://www.flir.com/products/spinnaker-sdk/?vertical=machine+vision&segment=iis), require a FLIR account login. Or use [this one for Ubuntu 20.04](/home/lin/develop/ros/rov_ws/src/rov/rov/config/flir_camera/)
   - untar it: `tar -xf spinnaker*.tar.gz`
   - cd ~/spinnaker*/
   - install denpendency (for more information, check the installation readme): 
