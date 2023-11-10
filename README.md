@@ -29,6 +29,7 @@
   $ git clone https://github.com/GSO-soslab/nortek_dvl_ethernet
   $ cd ~/your_workspace/
   $ rosdep install --from-paths src --ignore-src --rosdistro ${ROS_DISTRO} -y
+  $ sudo apt-get install ros-noetic-rosserial-arduino
   $ sudo apt install libopencv-dev python3-opencv
   $ catkin build -DCMAKE_BUILD_TYPE=Release -j$(nproc)
   ```
